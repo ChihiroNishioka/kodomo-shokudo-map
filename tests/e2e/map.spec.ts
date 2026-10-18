@@ -78,9 +78,16 @@ test.describe("現在地が取れる", () => {
     expect(layout.locateAttr).toBe(false);
     expect(layout.attrInside).toBe(true);
     expect(layout.attrText).toContain("OpenStreetMap");
-    await expect(page.locator("#notice-text")).toContainText(
-      "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください"
-    );
+    expect(page.viewportSize()).toEqual({ width: 390, height: 844 });
+    await expect(page.locator("#notice-text")).toHaveText("開催日は変更の可能性あり");
+    await expect(page.locator("#notice-text")).toBeVisible();
+    await expect(page.locator("#info-panel")).toBeHidden();
+    await expect(page.locator("#info-toggle")).toHaveAttribute("aria-expanded", "false");
+    const initialArea = await recordMapArea(page, "initial");
+    expect(initialArea.topBarHeight).toBeLessThanOrEqual(44);
+    expect(initialArea.headerHeight).toBeLessThanOrEqual(initialArea.topBarHeight + 1);
+    expect(initialArea.noticeFits).toBe(true);
+    expect(initialArea.ratio).toBeGreaterThanOrEqual(0.7);
     await expect(page.locator("#geo-banner")).toBeHidden();
     await expect(page.locator("#detail")).toBeHidden();
     await expect(page.locator(".pin")).toHaveCount(facilities.length);
@@ -96,6 +103,21 @@ test.describe("現在地が取れる", () => {
     expect(serialized).not.toMatch(/\d{2,4}号室/);
 
     await page.screenshot({ path: `${screenshotDir}/01_initial.png`, fullPage: false });
+
+    await page.locator("#info-toggle").click();
+    await expect(page.locator("#info-panel")).toBeVisible();
+    await expect(page.locator("#info-toggle")).toHaveAttribute("aria-expanded", "true");
+    await expect(page.locator("#notice-full")).toContainText(
+      "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください"
+    );
+    await expect(page.locator(".notice-more")).toContainText("掲載データの注意");
+    await expect(page.locator(".notice-more")).not.toHaveAttribute("open");
+    await expect(page.locator(".legend")).toContainText("赤ピンは、番地まで分かっている子ども食堂");
+    await expect(page.locator(".legend")).toContainText("青丸は、町名までの位置");
+    await expect(page.locator(".legend")).toContainText("クラスターではありません");
+    await page.screenshot({ path: `${screenshotDir}/07_info_expanded.png`, fullPage: false });
+    await page.locator("#info-toggle").click();
+    await expect(page.locator("#info-panel")).toBeHidden();
 
     const zoomBefore = await page.evaluate(() => window.__kodomoMap.map.getZoom());
     await page.getByRole("button", { name: "ズームイン" }).click();
@@ -254,7 +276,12 @@ test.describe("現在地が取れない", () => {
     await page.goto("/");
     await waitForMap(page);
     await expect(page.locator("#geo-banner")).toContainText("現在地が取得できません");
+    await expect(page.locator("#geo-banner")).toContainText(config.fallbackCenter.label);
     await expect(page.locator("#geo-retry")).toBeVisible();
+    const fallbackArea = await recordMapArea(page, "geolocation-fallback");
+    expect(fallbackArea.ratio).toBeGreaterThanOrEqual(0.7);
+    expect(await overlaps(page, "#geo-banner", ".zoom")).toBe(false);
+    expect(await overlaps(page, "#geo-banner", ".leaflet-control-attribution")).toBe(false);
     const center = await mapCenter(page);
     expect(Math.abs(center.lat - config.fallbackCenter.lat)).toBeLessThan(0.002);
     expect(Math.abs(center.lng - config.fallbackCenter.lng)).toBeLessThan(0.002);
@@ -287,6 +314,7 @@ test.describe("パネルと出典", () => {
     await page.getByRole("button", { name: "絞り込み" }).click();
     await expect(page.locator("#filter-panel")).toBeVisible();
     await expect(page.locator("#detail")).toBeHidden();
+    await openInfo(page);
     await page.getByRole("button", { name: "出典とライセンス" }).click();
     await expect(page.locator("#source-panel")).toBeVisible();
     await expect(page.locator("#filter-panel")).toBeHidden();
@@ -354,6 +382,7 @@ test.describe("パネルと出典", () => {
     const datasetLink = page.locator('#detail a[href="https://example.com/dataset"]');
     await expect(datasetLink).toHaveCount(1);
 
+    await openInfo(page);
     await page.getByRole("button", { name: "出典とライセンス" }).click();
     await expect(page.locator("#detail")).toBeHidden();
     const sourceHrefs = await page.locator("#source-body a").evaluateAll((nodes) =>
@@ -384,6 +413,10 @@ test.describe("現在地の近くにピンがない", () => {
     await expect(page.locator("#geo-banner")).toContainText(distance);
     await expect(page.locator("#geo-nearest")).toBeVisible();
     await expect(page.locator("#geo-retry")).toBeHidden();
+    const nearestArea = await recordMapArea(page, "nearest");
+    expect(nearestArea.ratio).toBeGreaterThanOrEqual(0.7);
+    expect(await overlaps(page, "#geo-banner", ".zoom")).toBe(false);
+    expect(await overlaps(page, "#geo-banner", ".leaflet-control-attribution")).toBe(false);
     expect(await pinsInsideMap(page)).toBe(0);
     await page.screenshot({ path: `${screenshotDir}/06_no_nearby.png`, fullPage: false });
 
@@ -395,6 +428,46 @@ test.describe("現在地の近くにピンがない", () => {
     await expect(page.locator(`.pin[data-facility-id="${nearest.facility.id}"]`)).toBeVisible();
   });
 });
+
+async function openInfo(page: Page) {
+  const toggle = page.locator("#info-toggle");
+  if ((await toggle.getAttribute("aria-expanded")) !== "true") await toggle.click();
+  await expect(page.locator("#info-panel")).toBeVisible();
+}
+
+async function recordMapArea(page: Page, label: string) {
+  const metrics = await page.evaluate(() => {
+    const map = document.querySelector("#map")!.getBoundingClientRect();
+    const bar = document.querySelector(".top-bar")!.getBoundingClientRect();
+    const header = document.querySelector(".top")!.getBoundingClientRect();
+    const notice = document.querySelector("#notice-text") as HTMLElement;
+    return {
+      viewport: { width: window.innerWidth, height: window.innerHeight },
+      map: { width: map.width, height: map.height },
+      ratio: map.height / window.innerHeight,
+      topBarHeight: bar.height,
+      headerHeight: header.height,
+      noticeFits: notice.scrollWidth <= notice.clientWidth + 1,
+    };
+  });
+  const file = "test-results/map-area.json";
+  const prev = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+  prev[label] = metrics;
+  fs.writeFileSync(file, JSON.stringify(prev, null, 2));
+  console.log(
+    `map area ${label}: ${metrics.map.height}px / ${metrics.viewport.height}px = ${(metrics.ratio * 100).toFixed(1)}%`
+  );
+  return metrics;
+}
+
+async function overlaps(page: Page, aSel: string, bSel: string) {
+  return page.evaluate(({ aSel, bSel }) => {
+    const a = document.querySelector(aSel)?.getBoundingClientRect();
+    const b = document.querySelector(bSel)?.getBoundingClientRect();
+    if (!a || !b || a.width === 0 || b.width === 0) return false;
+    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  }, { aSel, bSel });
+}
 
 async function waitForMap(page: Page) {
   await page.waitForFunction(() => window.__kodomoMap?.ready === true);
