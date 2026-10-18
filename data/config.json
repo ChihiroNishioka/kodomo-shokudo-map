@@ -7,7 +7,6 @@
     "label": "東京都庁"
   },
   "initialZoom": 15,
-  "approximateRadiusMeters": 300,
   "tileProvider": "osm",
   "tiles": {
     "osm": {
