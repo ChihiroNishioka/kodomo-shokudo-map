@@ -1,13 +1,13 @@
 {
   "retrieved": "2026-10-18",
-  "coverage": "東京都のうち、東京都オープンデータカタログに CC BY 4.0 の子ども食堂一覧CSVがある14区と、神奈川県オープンデータ（CC BY）の川崎市分。",
-  "published_count": 381,
-  "excluded_count": 52,
+  "coverage": "東京都のうち、東京都オープンデータカタログに CC BY 4.0 の子ども食堂一覧CSVがある14区と、神奈川県オープンデータ（CC BY）の川崎市分。高津区は、出所を明示すれば転載できる子育て支援情報サービスかながわの子ども食堂と、許諾文が見当たらないかわさきこども食堂ネットワーク高津区一覧の事実情報（名称・住所・曜日・時間）を足している。",
+  "published_count": 389,
+  "excluded_count": 54,
   "excluded_by_reason": {
     "address_unpublished": 7,
-    "address_too_coarse": 5,
+    "address_too_coarse": 4,
     "missing_name": 1,
-    "private_home": 4,
+    "private_home": 7,
     "placeholder_address": 32,
     "geocode_failed": 1,
     "missing_address": 2
@@ -24,6 +24,8 @@
       "input_rows": 7,
       "published_rows": 7,
       "excluded": {},
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -40,6 +42,8 @@
       "excluded": {
         "address_unpublished": 2
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -54,6 +58,8 @@
       "input_rows": 25,
       "published_rows": 25,
       "excluded": {},
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -70,6 +76,8 @@
       "excluded": {
         "address_too_coarse": 1
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -84,6 +92,8 @@
       "input_rows": 11,
       "published_rows": 11,
       "excluded": {},
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -100,6 +110,8 @@
       "excluded": {
         "missing_name": 1
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -116,6 +128,8 @@
       "excluded": {
         "private_home": 2
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -132,6 +146,8 @@
       "excluded": {
         "placeholder_address": 32
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -148,6 +164,8 @@
       "excluded": {
         "address_too_coarse": 1
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -166,6 +184,8 @@
         "geocode_failed": 1,
         "address_too_coarse": 1
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -180,6 +200,8 @@
       "input_rows": 4,
       "published_rows": 4,
       "excluded": {},
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -194,6 +216,8 @@
       "input_rows": 53,
       "published_rows": 53,
       "excluded": {},
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -211,6 +235,8 @@
         "address_unpublished": 1,
         "private_home": 1
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -227,6 +253,8 @@
       "excluded": {
         "address_unpublished": 4
       },
+      "duplicate_rows": 0,
+      "duplicate_names": [],
       "note": "",
       "retrieved": "2026-10-18"
     },
@@ -239,12 +267,56 @@
       "dataset_url": "https://catalog.opendata.pref.kanagawa.jp/dataset/3612def4cb0fe303382cd734b1e7357b",
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "input_rows": 30,
-      "published_rows": 26,
+      "published_rows": 27,
       "excluded": {
         "missing_address": 2,
-        "address_too_coarse": 2
+        "address_too_coarse": 1
       },
-      "note": "神奈川県オープンデータカタログの表示は「クリエイティブ・コモンズ-表示(CC-BY)」。掲載は公表の同意が得られた子ども食堂。",
+      "duplicate_rows": 0,
+      "duplicate_names": [],
+      "note": "神奈川県オープンデータカタログの表示は「クリエイティブ・コモンズ-表示(CC-BY)」。掲載は公表の同意が得られた子ども食堂。同じファイルの中で方書が同じ番地付き会場が一つだけあるときだけ、番地の無い行へその住所を写した（セルディア館）。",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "子育て支援情報サービスかながわ（高津区の子ども食堂）",
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "license": "出所明示（転載可）",
+      "license_url": "https://c.rakuraku.or.jp/index/copyright",
+      "dataset_url": "https://c.rakuraku.or.jp/npo/map",
+      "dataset_id": "kanagawa-npo-takatsu",
+      "input_rows": 10,
+      "published_rows": 5,
+      "excluded": {
+        "private_home": 2,
+        "missing_address": 1
+      },
+      "duplicate_rows": 2,
+      "duplicate_names": [
+        "Arthurこども食堂",
+        "はっぴぃまま子ども食堂"
+      ],
+      "note": "高津区で活動内容が子ども食堂の行だけ。著作権ページは、出所を明示すれば引用・転載・複製できると書き、無断転載を禁じる注記があるものはそれに従うとしている。代表者名・携帯電話・メールアドレスは載せていない。丁目だけで番地が無い会場は町名までの位置にする。",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "かわさきこども食堂ネットワーク（高津区一覧）",
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "license": "許諾未確認",
+      "license_url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/",
+      "dataset_url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/",
+      "dataset_id": "kawasaki-nw-takatsu",
+      "input_rows": 4,
+      "published_rows": 2,
+      "excluded": {
+        "private_home": 1
+      },
+      "duplicate_rows": 1,
+      "duplicate_names": [
+        "子ども食堂元住吉"
+      ],
+      "note": "フッターは©かわさきこども食堂ネットワークのみで、二次利用の許諾文は見当たらない。名称・住所・開催曜日・時間だけを載せ、料金と連絡先は載せていない。子ども食堂溝の口の番地は介護サービス情報公表システム（転載は出所明記）の施設所在地。まなスペースの番地は日本基督教団溝ノ口教会のアクセスページ（All Rights Reserved）にある事実情報。個人宅は住所を残さず除外。",
       "retrieved": "2026-10-18"
     }
   ],
@@ -286,8 +358,16 @@
       "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
     },
     {
-      "area": "かわさきこども食堂ネットワーク（jimdofree）",
-      "reason": "オープンデータではなく、再利用してよいという許諾を確認できないため使っていない。川崎市分は神奈川県の同意取得済みオープンデータを使った。"
+      "area": "かわさきこども食堂ネットワーク（高津区以外）",
+      "reason": "高津区一覧のカードだけを確認した。他区は今回の対象外で、サイト全体の二次利用許諾も見当たらない。"
+    },
+    {
+      "area": "川崎市ホームページ",
+      "reason": "著作権ページは、私的使用と引用を除き無断の複製・転載を禁じ、転載は各コンテンツの問い合わせ先への事前連絡と内容を改変しないことが条件だと書いている。市のページからは転載していない。"
+    },
+    {
+      "area": "川崎市社会福祉協議会『こどもの居場所活動紹介ガイドブック』",
+      "reason": "冊子は個人情報を目的外に使わないことと、掲載内容の無断転載・転写をしないよう書いている。転載していない。"
     },
     {
       "area": "むすびえ全国こども食堂マップ",
@@ -295,12 +375,18 @@
     },
     {
       "area": "OpenStreetMap",
-      "reason": "子ども食堂の開催曜日まで揃った、運営者の掲載同意が分かる抽出が得られないため、地図の背景タイル以外には使っていない。"
+      "reason": "2026-10-18に高津区を覆う範囲で、名称が子ども食堂・こども食堂の地物を検索したが0件だった。見つかったsocial_facilityは高齢者の在宅介護支援で、子ども食堂ではない。背景タイル以外には使っていない。"
     }
   ],
   "geocoder": {
     "name": "国土地理院 住所検索API",
     "url": "https://msearch.gsi.go.jp/address-search/AddressSearch",
     "note": "原データに信頼できる緯度経度が無い行だけを、1件あたり約0.7秒空けて検索した。結果（不一致を含む）は data/geocode-cache.json に保存し、再実行では再リクエストしない。住所の補修は、区名の重複除去、データセットの市区町村名の補完、渋谷区CSVで欠落している代々木の々の復元、国土地理院の応答が町名止まりだったときの町・字の一回だけ再検索に限る。"
-  }
+  },
+  "duplicates_removed": 3,
+  "duplicate_names": [
+    "Arthurこども食堂",
+    "はっぴぃまま子ども食堂",
+    "子ども食堂元住吉"
+  ]
 }

@@ -458,7 +458,7 @@ function renderSourceDialog() {
     .map((item) => `<li><strong>${escapeHtml(item.area)}</strong> ${escapeHtml(item.reason)}</li>`)
     .join("");
   els.sourceBody.innerHTML = `
-    <p>掲載 ${summary?.published_count ?? state.facilities.length}件。地図に無い区は、二次利用できるオープンデータがカタログに無かったか、許諾を確認できなかったため入れていません。</p>
+    <p>掲載 ${summary?.published_count ?? state.facilities.length}件。地図に無い区は、二次利用できるオープンデータがカタログに無かったため入れていません。高津区の追加分は、出所を明示すれば転載できる公開情報と、許諾文が見当たらない一覧の事実情報です。</p>
     <h3>使ったデータ</h3>
     <ul class="source-list">${rows}</ul>
     <h3>入れてないもの</h3>
