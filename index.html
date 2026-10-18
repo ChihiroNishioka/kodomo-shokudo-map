@@ -16,8 +16,9 @@
   <header class="top">
     <div class="top-bar">
       <p class="app-name">子ども食堂マップ</p>
-      <p class="notice-chip" id="notice-text" role="note" title="開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。">開催日は変更の可能性あり</p>
-      <button type="button" id="info-toggle" class="info-toggle" aria-expanded="false" aria-controls="info-panel">説明</button>
+      <button type="button" id="info-toggle" class="info-toggle" aria-expanded="false" aria-controls="info-panel" aria-label="説明を開く">
+        <span class="info-toggle-mark" aria-hidden="true">▼</span>
+      </button>
     </div>
     <div id="info-panel" class="info-panel" hidden>
       <p class="coverage">東京23区のうちオープンデータがある区と、川崎市</p>
