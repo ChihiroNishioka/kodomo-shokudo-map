@@ -70,7 +70,6 @@ async function main() {
 function cacheElements() {
   for (const id of [
     "map",
-    "notice-text",
     "geo-banner",
     "geo-message",
     "geo-retry",
@@ -132,6 +131,9 @@ function bindStaticUi() {
 function toggleInfo(open) {
   els.infoPanel.hidden = !open;
   els.infoToggle.setAttribute("aria-expanded", String(open));
+  els.infoToggle.setAttribute("aria-label", open ? "説明を閉じる" : "説明を開く");
+  const mark = els.infoToggle.querySelector(".info-toggle-mark");
+  if (mark) mark.textContent = open ? "▲" : "▼";
   state.map?.invalidateSize({ animate: false });
 }
 

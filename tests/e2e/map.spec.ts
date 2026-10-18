@@ -79,15 +79,19 @@ test.describe("現在地が取れる", () => {
     expect(layout.attrInside).toBe(true);
     expect(layout.attrText).toContain("OpenStreetMap");
     expect(page.viewportSize()).toEqual({ width: 390, height: 844 });
-    await expect(page.locator("#notice-text")).toHaveText("開催日は変更の可能性あり");
-    await expect(page.locator("#notice-text")).toBeVisible();
+    await expect(page.locator(".top-bar")).not.toContainText("開催日は変更の可能性あり");
+    await expect(page.locator("#notice-text")).toHaveCount(0);
+    const infoToggle = page.getByRole("button", { name: "説明を開く" });
+    await expect(infoToggle).toHaveAttribute("aria-expanded", "false");
+    await expect(infoToggle).toHaveAttribute("aria-controls", "info-panel");
+    await expect(infoToggle.locator(".info-toggle-mark")).toHaveText("▼");
     await expect(page.locator("#info-panel")).toBeHidden();
-    await expect(page.locator("#info-toggle")).toHaveAttribute("aria-expanded", "false");
     const initialArea = await recordMapArea(page, "initial");
     expect(initialArea.topBarHeight).toBeLessThanOrEqual(44);
     expect(initialArea.headerHeight).toBeLessThanOrEqual(initialArea.topBarHeight + 1);
-    expect(initialArea.noticeFits).toBe(true);
-    expect(initialArea.ratio).toBeGreaterThanOrEqual(0.7);
+    expect(initialArea.toggleWidth).toBeGreaterThanOrEqual(44);
+    expect(initialArea.toggleHeight).toBeGreaterThanOrEqual(44);
+    expect(initialArea.ratio).toBeGreaterThanOrEqual(0.84);
     await expect(page.locator("#geo-banner")).toBeHidden();
     await expect(page.locator("#detail")).toBeHidden();
     await expect(page.locator(".pin")).toHaveCount(facilities.length);
@@ -104,9 +108,11 @@ test.describe("現在地が取れる", () => {
 
     await page.screenshot({ path: `${screenshotDir}/01_initial.png`, fullPage: false });
 
-    await page.locator("#info-toggle").click();
+    await infoToggle.click();
     await expect(page.locator("#info-panel")).toBeVisible();
-    await expect(page.locator("#info-toggle")).toHaveAttribute("aria-expanded", "true");
+    const infoClose = page.getByRole("button", { name: "説明を閉じる" });
+    await expect(infoClose).toHaveAttribute("aria-expanded", "true");
+    await expect(infoClose.locator(".info-toggle-mark")).toHaveText("▲");
     await expect(page.locator("#notice-full")).toContainText(
       "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください"
     );
@@ -139,8 +145,10 @@ test.describe("現在地が取れる", () => {
     expect(shapes.approx).toContain("stroke-dasharray");
     expect(shapes.exact).not.toContain("stroke-dasharray");
     await page.screenshot({ path: `${screenshotDir}/07_info_expanded.png`, fullPage: false });
-    await page.locator("#info-toggle").click();
+    await infoClose.click();
     await expect(page.locator("#info-panel")).toBeHidden();
+    await expect(page.getByRole("button", { name: "説明を開く" })).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator(".info-toggle-mark")).toHaveText("▼");
 
     const zoomBefore = await page.evaluate(() => window.__kodomoMap.map.getZoom());
     await page.getByRole("button", { name: "ズームイン" }).click();
@@ -307,7 +315,7 @@ test.describe("現在地が取れない", () => {
     await expect(page.locator("#geo-banner")).toContainText(config.fallbackCenter.label);
     await expect(page.locator("#geo-retry")).toBeVisible();
     const fallbackArea = await recordMapArea(page, "geolocation-fallback");
-    expect(fallbackArea.ratio).toBeGreaterThanOrEqual(0.7);
+    expect(fallbackArea.ratio).toBeGreaterThanOrEqual(0.84);
     expect(await overlaps(page, "#geo-banner", ".zoom")).toBe(false);
     expect(await overlaps(page, "#geo-banner", ".leaflet-control-attribution")).toBe(false);
     const center = await mapCenter(page);
@@ -493,7 +501,7 @@ test.describe("現在地の近くにピンがない", () => {
     await expect(page.locator("#geo-nearest")).toBeVisible();
     await expect(page.locator("#geo-retry")).toBeHidden();
     const nearestArea = await recordMapArea(page, "nearest");
-    expect(nearestArea.ratio).toBeGreaterThanOrEqual(0.7);
+    expect(nearestArea.ratio).toBeGreaterThanOrEqual(0.84);
     expect(await overlaps(page, "#geo-banner", ".zoom")).toBe(false);
     expect(await overlaps(page, "#geo-banner", ".leaflet-control-attribution")).toBe(false);
     expect(await pinsInsideMap(page)).toBe(0);
@@ -519,14 +527,15 @@ async function recordMapArea(page: Page, label: string) {
     const map = document.querySelector("#map")!.getBoundingClientRect();
     const bar = document.querySelector(".top-bar")!.getBoundingClientRect();
     const header = document.querySelector(".top")!.getBoundingClientRect();
-    const notice = document.querySelector("#notice-text") as HTMLElement;
+    const toggle = document.querySelector("#info-toggle")!.getBoundingClientRect();
     return {
       viewport: { width: window.innerWidth, height: window.innerHeight },
       map: { width: map.width, height: map.height },
       ratio: map.height / window.innerHeight,
       topBarHeight: bar.height,
       headerHeight: header.height,
-      noticeFits: notice.scrollWidth <= notice.clientWidth + 1,
+      toggleWidth: toggle.width,
+      toggleHeight: toggle.height,
     };
   });
   const file = "test-results/map-area.json";
