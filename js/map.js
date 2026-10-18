@@ -23,23 +23,57 @@ export function createMap(container, config) {
 
 function keepDragOnTwoFingers(map) {
   // Leaflet starts a drag on pointerdown. GestureHandling turns dragging on
-  // from touchstart, which is too late in Chromium. Enable it in the capture
-  // phase, before Leaflet sees the second finger.
+  // from touchstart, which is too late in Chromium, so the finger count has
+  // to be right in the capture phase. pointerup does not always reach the map
+  // (the finger leaves the element, or the browser takes the gesture), and a
+  // stale id then leaves dragging stuck on or off.
   const active = new Set();
   const container = map.getContainer();
-  container.addEventListener("pointerdown", (event) => {
-    if (event.pointerType !== "touch") return;
-    active.add(event.pointerId);
+
+  const sync = () => {
     if (active.size >= 2) map.dragging.enable();
     else map.dragging.disable();
-  }, true);
-  const release = (event) => {
-    if (event.pointerType !== "touch") return;
-    active.delete(event.pointerId);
-    if (active.size < 2) map.dragging.disable();
   };
-  container.addEventListener("pointerup", release, true);
-  container.addEventListener("pointercancel", release, true);
+
+  const forget = (pointerId) => {
+    if (!active.delete(pointerId)) return;
+    sync();
+  };
+
+  const releasePointer = (event) => {
+    if (event.pointerType && event.pointerType !== "touch") return;
+    if (event.pointerId == null) return;
+    forget(event.pointerId);
+  };
+
+  container.addEventListener("pointerdown", (event) => {
+    if (event.pointerType !== "touch") return;
+    // isPrimary means this touch is a new first finger. Ids still in the set
+    // never received pointerup or pointercancel.
+    if (event.isPrimary) active.clear();
+    else if (active.has(event.pointerId)) active.delete(event.pointerId);
+    active.add(event.pointerId);
+    sync();
+  }, true);
+
+  container.addEventListener("pointerleave", releasePointer);
+  container.addEventListener("lostpointercapture", releasePointer);
+  window.addEventListener("pointerup", releasePointer, true);
+  window.addEventListener("pointercancel", releasePointer, true);
+  window.addEventListener("blur", () => {
+    if (active.size === 0) return;
+    active.clear();
+    sync();
+  });
+
+  const releaseIfIdle = (event) => {
+    if (event.touches && event.touches.length === 0 && active.size > 0) {
+      active.clear();
+      sync();
+    }
+  };
+  container.addEventListener("touchend", releaseIfIdle, true);
+  container.addEventListener("touchcancel", releaseIfIdle, true);
 }
 
 export function setTileProvider(map, tiles, config, providerId) {

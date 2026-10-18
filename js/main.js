@@ -3,7 +3,7 @@ import { createMap } from "./map.js";
 import { syncMarkers, markerButton } from "./markers.js";
 import { renderList } from "./list-view.js";
 import { WEEKDAYS, TARGETS, matchesFacility, formatTargets, formatWeekdays } from "./filters.js";
-import { haversineMeters } from "./geo.js";
+import { formatDistance, haversineMeters } from "./geo.js";
 
 const state = {
   facilities: [],
@@ -68,6 +68,7 @@ function cacheElements() {
     "geo-banner",
     "geo-message",
     "geo-retry",
+    "geo-nearest",
     "locate-btn",
     "zoom-in",
     "zoom-out",
@@ -98,6 +99,7 @@ function bindStaticUi() {
   els.zoomOut.addEventListener("click", () => state.map?.zoomOut());
   els.locateBtn.addEventListener("click", () => locate());
   els.geoRetry.addEventListener("click", () => locate());
+  els.geoNearest.addEventListener("click", () => moveToNearest());
   els.tabMap.addEventListener("click", () => setView("map"));
   els.tabList.addEventListener("click", () => setView("list"));
   els.filterButton.addEventListener("click", () => toggleFilter(true));
@@ -133,7 +135,7 @@ function matchingIdSet() {
 
 function locate() {
   state.originKind = "pending";
-  setGeoBanner("現在地を取得しています。", false);
+  setGeoBanner("現在地を取得しています。");
   if (!navigator.geolocation) {
     applyFallback("このブラウザは位置情報に対応していません。");
     return;
@@ -150,6 +152,7 @@ function locate() {
       showUserMarker(origin, position.coords.accuracy);
       state.map.setView([origin.lat, origin.lng], state.config.initialZoom || 15);
       refreshViews();
+      showNeighborhoodHint(origin);
     },
     () => {
       applyFallback("現在地が取得できません。");
@@ -164,14 +167,58 @@ function applyFallback(message) {
   state.originKind = "fallback";
   clearUserMarker();
   state.map.setView([fallback.lat, fallback.lng], Math.min(state.config.initialZoom || 14, 14));
-  setGeoBanner(`${message} 地図は${fallback.label}を中心に表示しています。`, true);
+  setGeoBanner(`${message} 地図は${fallback.label}を中心に表示しています。`, { retry: true });
   refreshViews();
 }
 
-function setGeoBanner(message, showRetry) {
+function setGeoBanner(message, { retry = false, nearest = false, tone = "error" } = {}) {
   els.geoMessage.textContent = message;
-  els.geoRetry.hidden = !showRetry;
+  els.geoRetry.hidden = !retry;
+  els.geoNearest.hidden = !nearest;
+  els.geoBanner.classList.toggle("is-error", tone === "error");
+  els.geoBanner.classList.toggle("is-info", tone === "info");
   els.geoBanner.hidden = false;
+}
+
+function nearestFacility(origin) {
+  let best = null;
+  let bestDistance = Number.POSITIVE_INFINITY;
+  for (const facility of state.facilities) {
+    const distanceMeters = haversineMeters(origin, facility);
+    if (distanceMeters < bestDistance) {
+      best = facility;
+      bestDistance = distanceMeters;
+    }
+  }
+  return best ? { facility: best, distanceMeters: bestDistance } : null;
+}
+
+function pinsInView() {
+  const bounds = state.map.getBounds();
+  return state.facilities.some((facility) => bounds.contains([facility.lat, facility.lng]));
+}
+
+function showNeighborhoodHint(origin) {
+  if (pinsInView()) {
+    els.geoNearest.hidden = true;
+    return;
+  }
+  const nearest = nearestFacility(origin);
+  if (!nearest) return;
+  state.nearestId = nearest.facility.id;
+  const distance = formatDistance(nearest.distanceMeters);
+  setGeoBanner(
+    `近くに子ども食堂がありません。最も近い「${nearest.facility.name}」までは${distance}です。`,
+    { nearest: true, tone: "info" }
+  );
+}
+
+function moveToNearest() {
+  const nearest = state.origin ? nearestFacility(state.origin) : null;
+  if (!nearest) return;
+  state.nearestId = nearest.facility.id;
+  state.map.setView([nearest.facility.lat, nearest.facility.lng], state.config.initialZoom || 15);
+  els.geoBanner.hidden = true;
 }
 
 function showUserMarker(origin, accuracy) {
@@ -233,7 +280,7 @@ function renderListView() {
       setView("map");
       const facility = state.facilities.find((item) => item.id === id);
       if (facility) state.map.setView([facility.lat, facility.lng], Math.max(state.map.getZoom(), 15));
-      selectFacility(id, false);
+      selectFacility(id, true);
     },
   });
 }
@@ -244,6 +291,7 @@ function toggleFacility(id) {
 }
 
 function selectFacility(id, restoreFocus) {
+  closeOtherSheets("detail");
   state.lastFocus = markerButton(state.map, id) || document.activeElement;
   state.selectedId = id;
   syncMarkers(state.map, state.facilities, markerOptions());
@@ -267,6 +315,18 @@ function revealPin(id) {
   state.map.panBy([point.x - mapRect.width / 2, point.y - targetY], { animate: false });
 }
 
+function closeOtherSheets(except) {
+  if (except !== "detail" && !els.detail.hidden) closeDetail(false);
+  if (except !== "filter" && !els.filterPanel.hidden) {
+    els.filterPanel.hidden = true;
+    els.filterButton.setAttribute("aria-expanded", "false");
+  }
+  if (except !== "source" && !els.sourcePanel.hidden) {
+    els.sourcePanel.hidden = true;
+    els.sourceButton.setAttribute("aria-expanded", "false");
+  }
+}
+
 function closeDetail(restoreFocus) {
   const previous = state.selectedId;
   state.selectedId = null;
@@ -286,15 +346,14 @@ function fillDetail(id) {
   const phone = facility.contact.phone && facility.contact.phone !== "未確認"
     ? escapeHtml(facility.contact.phone)
     : "未確認";
-  const url = facility.contact.url && facility.contact.url.startsWith("http")
-    ? `<a href="${escapeAttr(facility.contact.url)}" target="_blank" rel="noopener noreferrer">施設・団体のページ</a>`
-    : "未確認";
+  const url = externalAnchor(facility.contact.url, "施設・団体のページ") || "未確認";
   const directions = `https://www.google.com/maps/dir/?api=1&destination=${facility.lat},${facility.lng}`;
+  const counts = precisionSummary();
   els.detailBody.innerHTML = `
     <p class="badges">
       ${facility.is_sample ? '<span class="badge badge-sample">架空のサンプル</span>' : ""}
-      ${approximate ? '<span class="badge badge-approx">おおよその位置</span>' : ""}
-      <span class="badge">${escapeHtml(facility.source.license)}</span>
+      ${approximate ? '<span class="badge badge-approx">町名までの位置</span>' : ""}
+      ${licenseBadge(facility.source)}
     </p>
     <h2 id="detail-title">${escapeHtml(facility.name)}</h2>
     ${facility.description ? `<p class="detail-lead">${escapeHtml(facility.description)}</p>` : ""}
@@ -307,11 +366,11 @@ function fillDetail(id) {
       <div><dt>料金</dt><dd>${escapeHtml(facility.fee_text || "記載なし")}</dd></div>
       <div><dt>電話</dt><dd>${phone}</dd></div>
       <div><dt>ウェブ</dt><dd>${url}</dd></div>
-      <div><dt>出典</dt><dd>${escapeHtml(facility.source.provider)} /
-        <a href="${escapeAttr(facility.source.dataset_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(facility.source.license)}</a>
+      <div><dt>出典</dt><dd>${externalAnchor(facility.source.dataset_url, facility.source.provider) || escapeHtml(facility.source.provider)}
+        / ${externalAnchor(facility.source.license_url, facility.source.license) || escapeHtml(facility.source.license)}
         <span class="fresh">取得日 ${escapeHtml(facility.source.retrieved)}</span></dd></div>
     </dl>
-    ${approximate ? `<p class="detail-note">このピンは住所検索で番地まで特定できなかったため、半径約${state.config.approximateRadiusMeters}mの範囲で示しています。</p>` : ""}
+    ${approximate ? `<p class="detail-note">国土地理院の住所検索で番地まで一致しなかったため、町名までの位置を示しています。掲載${counts.total}件のうち、番地まで一致は${counts.block}件、町名までの概位は${counts.town}件です。円はその地点の目安で、個人宅を隠すための位置ずらしではありません。</p>` : ""}
     <p class="detail-warning">${escapeHtml(facility.schedule.notes)}</p>
     <a class="directions" id="detail-directions" href="${escapeAttr(directions)}" target="_blank" rel="noopener noreferrer">経路を見る</a>
   `;
@@ -377,6 +436,7 @@ function updateFilterCount() {
 }
 
 function toggleFilter(open) {
+  if (open) closeOtherSheets("filter");
   els.filterPanel.hidden = !open;
   els.filterButton.setAttribute("aria-expanded", String(open));
   if (open) els.filterClose.focus();
@@ -387,10 +447,11 @@ function renderSourceDialog() {
   const summary = state.sources;
   const included = summary?.sources || [];
   const missing = summary?.not_included || [];
+  const counts = precisionSummary();
   const rows = included
     .map(
-      (source) => `<li><a href="${escapeAttr(source.dataset_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.provider)}</a>
-        <span>${escapeHtml(source.license)} / 掲載 ${source.published_rows}件（元データ ${source.input_rows}件）</span></li>`
+      (source) => `<li>${externalAnchor(source.dataset_url, source.provider) || escapeHtml(source.provider)}
+        <span>${externalAnchor(source.license_url, source.license) || escapeHtml(source.license)} / 掲載 ${source.published_rows}件（元データ ${source.input_rows}件）</span></li>`
     )
     .join("");
   const gaps = missing
@@ -402,11 +463,12 @@ function renderSourceDialog() {
     <ul class="source-list">${rows}</ul>
     <h3>入れてないもの</h3>
     <ul class="source-list">${gaps}</ul>
-    <p>座標が元データに無い会場は、国土地理院の住所検索で一度だけ調べ、結果を同梱しています。</p>
+    <p>座標が元データに無い会場は、国土地理院の住所検索で一度だけ調べ、結果を同梱しています。番地まで一致したのは${counts.block}件、町名までの概位は${counts.town}件です。「町名までの位置」は、番地まで一致しなかった会場です。</p>
   `;
 }
 
 function toggleSource(open) {
+  if (open) closeOtherSheets("source");
   els.sourcePanel.hidden = !open;
   els.sourceButton.setAttribute("aria-expanded", String(open));
   if (open) els.sourceClose.focus();
@@ -416,6 +478,39 @@ function toggleSource(open) {
 function showFatal(message) {
   els.fatal.hidden = false;
   els.fatal.textContent = message;
+}
+
+function precisionSummary() {
+  const total = state.facilities.length;
+  const town = state.facilities.filter((facility) => facility.address.location_precision === "approximate").length;
+  return { total, town, block: total - town };
+}
+
+function safeHttpUrl(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw || /\s/.test(raw)) return "";
+  let parsed;
+  try {
+    parsed = new URL(raw);
+  } catch {
+    return "";
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return "";
+  if (!parsed.hostname) return "";
+  return parsed.href;
+}
+
+function externalAnchor(url, label) {
+  const href = safeHttpUrl(url);
+  if (!href) return "";
+  return `<a href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+}
+
+function licenseBadge(source) {
+  const text = escapeHtml(source.license);
+  const href = safeHttpUrl(source.license_url);
+  if (!href) return `<span class="badge">${text}</span>`;
+  return `<a class="badge" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${text}</a>`;
 }
 
 function escapeHtml(value) {

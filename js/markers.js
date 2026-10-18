@@ -7,7 +7,7 @@ function pinMarkup(facility, { selected, dimmed }) {
   const label = dimmed
     ? `${facility.name}（絞り込み対象外）`
     : approximate
-      ? `${facility.name}（おおよその位置）`
+      ? `${facility.name}（町名までの位置）`
       : facility.name;
   return `<button type="button" class="${classes.join(" ")}" data-facility-id="${facility.id}" aria-pressed="${selected ? "true" : "false"}" aria-label="${escapeAttr(label)}">
     <svg viewBox="0 0 32 32" aria-hidden="true">

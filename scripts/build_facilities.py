@@ -23,8 +23,6 @@ from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
-import openpyxl
-
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
 CACHE_PATH = ROOT / "data" / "geocode-cache.json"
@@ -135,6 +133,8 @@ def load_csv(path: Path) -> list[dict]:
 
 
 def load_kanagawa_kawasaki(path: Path) -> list[dict]:
+    import openpyxl
+
     book = openpyxl.load_workbook(path, read_only=True, data_only=True)
     sheet = book[book.sheetnames[0]]
     iterator = sheet.iter_rows(values_only=True)
@@ -444,9 +444,36 @@ def public_phone(row: dict) -> str:
     return "未確認"
 
 
+def is_http_url(url: object) -> bool:
+    """True only for http(s) URLs with a host. javascript: and data: are rejected."""
+    if not isinstance(url, str):
+        return False
+    raw = url.strip()
+    if not raw or any(char.isspace() for char in raw):
+        return False
+    parts = urllib.parse.urlsplit(raw)
+    if parts.scheme.lower() not in {"http", "https"}:
+        return False
+    return bool(parts.hostname)
+
+
+def http_url_problems(facilities: list[dict], source_reports: list[dict]) -> list[str]:
+    bad = []
+    for facility in facilities:
+        source = facility.get("source") or {}
+        for key in ("dataset_url", "license_url"):
+            if not is_http_url(source.get(key)):
+                bad.append(f"{facility.get('id')}:{key}")
+    for report in source_reports:
+        for key in ("dataset_url", "license_url"):
+            if not is_http_url(report.get(key)):
+                bad.append(f"{report.get('provider')}:{key}")
+    return bad
+
+
 def public_url(row: dict) -> str:
-    url = nfkc(row.get("URL", ""))
-    if url.startswith(("http://", "https://")):
+    url = nfkc(row.get("URL", "")).strip()
+    if is_http_url(url):
         return url
     return "未確認"
 
@@ -876,6 +903,7 @@ def build() -> None:
             problems.append(f"{label}:{found.group(0)}")
             index = found.start()
             print(text[max(0, index - 100): index + 120].replace("\n", " "))
+    problems.extend(f"url:{item}" for item in http_url_problems(facilities, source_reports))
     if problems:
         raise SystemExit("refusing to write facilities.json: " + ", ".join(problems))
 
@@ -928,5 +956,29 @@ def build() -> None:
     save_cache(cache)
 
 
+def self_test() -> None:
+    assert is_http_url("https://creativecommons.org/licenses/by/4.0/deed.ja")
+    assert is_http_url("http://example.com/data")
+    assert is_http_url("HTTPS://example.com/a")
+    assert is_http_url(" https://example.com/a")
+    assert not is_http_url("javascript:alert(1)")
+    assert not is_http_url("JavaScript:alert(1)")
+    assert not is_http_url("data:text/html,hi")
+    assert not is_http_url("https:example.com")
+    assert not is_http_url("//example.com/a")
+    assert not is_http_url("https://")
+    assert not is_http_url("")
+    assert not is_http_url(None)
+    assert not is_http_url("https://example.com/a b")
+    sample = [{"id": "x", "source": {"dataset_url": "javascript:alert(1)", "license_url": "https://example.com"}}]
+    assert http_url_problems(sample, []) == ["x:dataset_url"]
+    print("url self-test ok")
+
+
 if __name__ == "__main__":
-    build()
+    import sys
+
+    if "--self-test" in sys.argv:
+        self_test()
+    else:
+        build()

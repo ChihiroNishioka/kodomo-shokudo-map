@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#1b4d3e">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://cyberjapandata.gsi.go.jp; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'">
   <title>子ども食堂マップ</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
@@ -20,7 +21,7 @@
     <p class="notice" id="notice-text" role="note">開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。</p>
     <details class="notice-more">
       <summary>掲載データの注意</summary>
-      <p>情報は各自治体のオープンデータです。個人宅や、住所を非公開としている会場は載せていません。電話は団体の固定番号があるものだけを表示し、携帯電話番号とメールアドレスは載せていません。行く前に、出典のページか施設に確認してください。</p>
+      <p>情報は各自治体のオープンデータです。個人宅や、住所を非公開としている会場は載せていません。電話は団体の固定番号があるものだけを表示し、携帯電話番号とメールアドレスは載せていません。「町名までの位置」は、国土地理院の住所検索が番地まで一致しなかった会場です。ピンは検索結果の地点のままで、個人宅を隠すためにずらしてはいません。行く前に、出典のページか施設に確認してください。</p>
     </details>
     <button type="button" id="source-button" class="text-button" aria-haspopup="dialog" aria-expanded="false">出典とライセンス</button>
   </header>
@@ -28,12 +29,13 @@
   <div id="geo-banner" class="geo-banner" role="status" hidden>
     <p id="geo-message">現在地を取得しています。</p>
     <button type="button" id="geo-retry" hidden>再試行</button>
+    <button type="button" id="geo-nearest" hidden>最寄りに寄せる</button>
   </div>
   <p id="fatal" class="fatal" hidden></p>
 
   <main class="stage">
     <div id="map-view" class="map-view">
-      <div id="map" role="application" aria-label="子ども食堂の地図"></div>
+      <div id="map" role="region" aria-label="子ども食堂の地図"></div>
       <div class="map-tools">
         <button type="button" id="locate-btn" class="tool" aria-label="現在地を再取得">現在地</button>
         <div class="zoom" role="group" aria-label="ズーム">
