@@ -1,0 +1,14 @@
+{
+  "name": "kodomo-shokudo-map",
+  "private": true,
+  "version": "0.1.0",
+  "description": "東京23区と川崎市のオープンデータで、今いる場所から近い子ども食堂を探す静的マップ。",
+  "scripts": {
+    "start": "python3 -m http.server 47321 --bind 127.0.0.1",
+    "test": "playwright test",
+    "build-data": "python3 scripts/build_facilities.py"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
+}

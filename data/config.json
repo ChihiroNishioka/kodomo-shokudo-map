@@ -1,0 +1,29 @@
+{
+  "dataSource": "data/facilities.json",
+  "sourcesSummary": "data/sources.json",
+  "fallbackCenter": {
+    "lat": 35.689634,
+    "lng": 139.692101,
+    "label": "東京都庁"
+  },
+  "initialZoom": 15,
+  "approximateRadiusMeters": 300,
+  "tileProvider": "osm",
+  "tiles": {
+    "osm": {
+      "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      "attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>",
+      "maxZoom": 19
+    },
+    "gsi": {
+      "url": "https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png",
+      "attribution": "<a href=\"https://maps.gsi.go.jp/development/ichiran.html\">地理院タイル</a>（国土地理院）",
+      "maxZoom": 18
+    }
+  },
+  "gestureHandlingText": {
+    "touch": "地図を操作するには2本の指で動かしてください",
+    "scroll": "地図をズームするにはCtrlキーを押しながらスクロールしてください",
+    "scrollMac": "地図をズームするには⌘キーを押しながらスクロールしてください"
+  }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1b4d3e">
+  <title>子ども食堂マップ</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="vendor/leaflet-gesture-handling/leaflet-gesture-handling.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#map">地図へスキップ</a>
+  <header class="top">
+    <div class="brand">
+      <p class="app-name">子ども食堂マップ</p>
+      <p class="coverage">東京23区のうちオープンデータがある区と、川崎市</p>
+    </div>
+    <p class="notice" id="notice-text" role="note">開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。</p>
+    <details class="notice-more">
+      <summary>掲載データの注意</summary>
+      <p>情報は各自治体のオープンデータです。個人宅や、住所を非公開としている会場は載せていません。電話は団体の固定番号があるものだけを表示し、携帯電話番号とメールアドレスは載せていません。行く前に、出典のページか施設に確認してください。</p>
+    </details>
+    <button type="button" id="source-button" class="text-button" aria-haspopup="dialog" aria-expanded="false">出典とライセンス</button>
+  </header>
+
+  <div id="geo-banner" class="geo-banner" role="status" hidden>
+    <p id="geo-message">現在地を取得しています。</p>
+    <button type="button" id="geo-retry" hidden>再試行</button>
+  </div>
+  <p id="fatal" class="fatal" hidden></p>
+
+  <main class="stage">
+    <div id="map-view" class="map-view">
+      <div id="map" role="application" aria-label="子ども食堂の地図"></div>
+      <div class="map-tools">
+        <button type="button" id="locate-btn" class="tool" aria-label="現在地を再取得">現在地</button>
+        <div class="zoom" role="group" aria-label="ズーム">
+          <button type="button" id="zoom-in" aria-label="ズームイン">+</button>
+          <button type="button" id="zoom-out" aria-label="ズームアウト">−</button>
+        </div>
+      </div>
+    </div>
+    <section id="list-view" class="list-view" hidden aria-label="距離順の一覧"></section>
+  </main>
+
+  <nav class="tabs" aria-label="表示の切り替え">
+    <div class="tablist" role="tablist">
+      <button type="button" id="tab-map" role="tab" aria-selected="true" aria-controls="map-view">地図</button>
+      <button type="button" id="tab-list" role="tab" aria-selected="false" aria-controls="list-view">一覧</button>
+    </div>
+    <button type="button" id="filter-button" class="filter-button" aria-expanded="false" aria-controls="filter-panel">絞り込み</button>
+  </nav>
+
+  <section id="detail" class="sheet" hidden role="dialog" aria-modal="false" aria-labelledby="detail-title">
+    <div class="sheet-bar">
+      <button type="button" id="detail-close" aria-label="詳細を閉じる">閉じる</button>
+    </div>
+    <div id="detail-body" class="sheet-body"></div>
+  </section>
+
+  <section id="filter-panel" class="sheet" hidden role="dialog" aria-modal="false" aria-labelledby="filter-title">
+    <div class="sheet-bar">
+      <h2 id="filter-title">絞り込み</h2>
+      <button type="button" id="filter-clear">条件をクリア</button>
+      <button type="button" id="filter-close" aria-label="絞り込みを閉じる">閉じる</button>
+    </div>
+    <form id="filter-form" class="sheet-body"></form>
+  </section>
+
+  <section id="source-panel" class="sheet" hidden role="dialog" aria-modal="false" aria-labelledby="source-title">
+    <div class="sheet-bar">
+      <h2 id="source-title">出典とライセンス</h2>
+      <button type="button" id="source-close" aria-label="出典を閉じる">閉じる</button>
+    </div>
+    <div id="source-body" class="sheet-body"></div>
+  </section>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="vendor/leaflet-gesture-handling/leaflet-gesture-handling.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

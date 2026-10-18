@@ -1,0 +1,267 @@
+[
+  {
+    "name": "ユニバーサルスペースさくら",
+    "municipality": "台東区",
+    "reason": "address_unpublished"
+  },
+  {
+    "name": "Kids Café",
+    "municipality": "台東区",
+    "reason": "address_unpublished"
+  },
+  {
+    "name": "クロモンこども食堂",
+    "municipality": "品川区",
+    "reason": "address_too_coarse",
+    "address": "東京都品川区北品川1丁目周辺"
+  },
+  {
+    "name": "(名称なし)",
+    "municipality": "大田区",
+    "reason": "missing_name"
+  },
+  {
+    "name": "渋喜屋テーブル",
+    "municipality": "渋谷区",
+    "reason": "private_home"
+  },
+  {
+    "name": "渋谷おやこサロン",
+    "municipality": "渋谷区",
+    "reason": "private_home"
+  },
+  {
+    "name": "ぶらんけっとのこどもごはん",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "子供食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "みんなのキッチン",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "こども食堂バベット",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "こども食堂Annekaffeekanne",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "こども食堂パークサイドカフェ",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "子ども食堂ハイハイ",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "みんなの食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "子ども食堂ゆい",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "おみやげフルーツ",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "こども食堂さくら",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "やまいち食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "やよいスクエア子ども食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "子ども食堂 あつまり亭",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "中野子どもレストラン",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "上高田みんなの食堂フードパントリー",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "城山みんなの食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "江古田にこにこ広場",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "わくわくわらっぴー親子食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "わくわくひみつキッチン",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "ゆめのいろ食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "プールナ食堂中野エカイエ",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "たぬどん食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "なべよこ地域食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "わいわいこども食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "子ども食堂かみさぎ",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "お弁当かみさぎ",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "みんなのよりば「よりみち」",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "ママほっとキッチン",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "キャトルエピス子ども食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "みんなのへや食堂",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "e場所こども&おとなフードパントリー",
+    "municipality": "中野区",
+    "reason": "placeholder_address"
+  },
+  {
+    "name": "ばぁばら",
+    "municipality": "杉並区",
+    "reason": "address_too_coarse"
+  },
+  {
+    "name": "要町あさやけ子ども食堂",
+    "municipality": "豊島区",
+    "reason": "private_home"
+  },
+  {
+    "name": "フロンティア紡ぐ子ども食堂",
+    "municipality": "豊島区",
+    "reason": "geocode_failed",
+    "address": "東京都豊島区2-63-4"
+  },
+  {
+    "name": "ニシイケ食堂",
+    "municipality": "豊島区",
+    "reason": "address_too_coarse",
+    "address": "東京都豊島区西池袋周辺"
+  },
+  {
+    "name": "子ども食堂みんないっしょ!",
+    "municipality": "練馬区",
+    "reason": "address_unpublished"
+  },
+  {
+    "name": "子ども食堂ビューティーシニアS'",
+    "municipality": "練馬区",
+    "reason": "private_home"
+  },
+  {
+    "name": "ハーフタイム月曜たまり場",
+    "municipality": "葛飾区",
+    "reason": "address_unpublished"
+  },
+  {
+    "name": "ハーフタイム水曜たまり場",
+    "municipality": "葛飾区",
+    "reason": "address_unpublished"
+  },
+  {
+    "name": "ハーフタイム日曜たまり場",
+    "municipality": "葛飾区",
+    "reason": "address_unpublished"
+  },
+  {
+    "name": "親子の笑顔育みプロジェクト",
+    "municipality": "葛飾区",
+    "reason": "address_unpublished"
+  },
+  {
+    "name": "和KAZUこども食堂",
+    "municipality": "川崎市",
+    "reason": "missing_address"
+  },
+  {
+    "name": "梶ヶ谷親子食堂",
+    "municipality": "川崎市",
+    "reason": "missing_address"
+  },
+  {
+    "name": "はっぴぃまま子ども食堂",
+    "municipality": "川崎市",
+    "reason": "address_too_coarse",
+    "address": "神奈川県川崎市"
+  },
+  {
+    "name": "てらこみーる",
+    "municipality": "川崎市",
+    "reason": "address_too_coarse",
+    "address": "神奈川県川崎市中原区"
+  }
+]

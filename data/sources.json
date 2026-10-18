@@ -1,0 +1,306 @@
+{
+  "retrieved": "2026-10-18",
+  "coverage": "東京都のうち、東京都オープンデータカタログに CC BY 4.0 の子ども食堂一覧CSVがある14区と、神奈川県オープンデータ（CC BY）の川崎市分。",
+  "published_count": 381,
+  "excluded_count": 52,
+  "excluded_by_reason": {
+    "address_unpublished": 7,
+    "address_too_coarse": 5,
+    "missing_name": 1,
+    "private_home": 4,
+    "placeholder_address": 32,
+    "geocode_failed": 1,
+    "missing_address": 2
+  },
+  "sources": [
+    {
+      "provider": "文京区",
+      "prefecture": "東京都",
+      "city": "文京区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131059d3100000001",
+      "dataset_id": "t131059d3100000001",
+      "input_rows": 7,
+      "published_rows": 7,
+      "excluded": {},
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "台東区",
+      "prefecture": "東京都",
+      "city": "台東区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131067d3100000001",
+      "dataset_id": "t131067d3100000001",
+      "input_rows": 7,
+      "published_rows": 5,
+      "excluded": {
+        "address_unpublished": 2
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "江東区",
+      "prefecture": "東京都",
+      "city": "江東区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131083d3100000001",
+      "dataset_id": "t131083d3100000001",
+      "input_rows": 25,
+      "published_rows": 25,
+      "excluded": {},
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "品川区",
+      "prefecture": "東京都",
+      "city": "品川区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131091d3100000001",
+      "dataset_id": "t131091d3100000001",
+      "input_rows": 35,
+      "published_rows": 34,
+      "excluded": {
+        "address_too_coarse": 1
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "目黒区",
+      "prefecture": "東京都",
+      "city": "目黒区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131105d3100000001",
+      "dataset_id": "t131105d3100000001",
+      "input_rows": 11,
+      "published_rows": 11,
+      "excluded": {},
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "大田区",
+      "prefecture": "東京都",
+      "city": "大田区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131113d3100000001",
+      "dataset_id": "t131113d3100000001",
+      "input_rows": 54,
+      "published_rows": 53,
+      "excluded": {
+        "missing_name": 1
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "渋谷区",
+      "prefecture": "東京都",
+      "city": "渋谷区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131130d3100000001",
+      "dataset_id": "t131130d3100000001",
+      "input_rows": 52,
+      "published_rows": 50,
+      "excluded": {
+        "private_home": 2
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "中野区",
+      "prefecture": "東京都",
+      "city": "中野区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131148d3100000001",
+      "dataset_id": "t131148d3100000001",
+      "input_rows": 34,
+      "published_rows": 2,
+      "excluded": {
+        "placeholder_address": 32
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "杉並区",
+      "prefecture": "東京都",
+      "city": "杉並区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131156d3100000001",
+      "dataset_id": "t131156d3100000001",
+      "input_rows": 42,
+      "published_rows": 40,
+      "excluded": {
+        "address_too_coarse": 1
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "豊島区",
+      "prefecture": "東京都",
+      "city": "豊島区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131164d3100000001",
+      "dataset_id": "t131164d3100000001",
+      "input_rows": 19,
+      "published_rows": 10,
+      "excluded": {
+        "private_home": 2,
+        "geocode_failed": 1,
+        "address_too_coarse": 1
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "荒川区",
+      "prefecture": "東京都",
+      "city": "荒川区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131181d3100000001",
+      "dataset_id": "t131181d3100000001",
+      "input_rows": 4,
+      "published_rows": 4,
+      "excluded": {},
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "板橋区",
+      "prefecture": "東京都",
+      "city": "板橋区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131199d3100000001",
+      "dataset_id": "t131199d3100000001",
+      "input_rows": 53,
+      "published_rows": 53,
+      "excluded": {},
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "練馬区",
+      "prefecture": "東京都",
+      "city": "練馬区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131202d3100000001",
+      "dataset_id": "t131202d3100000001",
+      "input_rows": 55,
+      "published_rows": 53,
+      "excluded": {
+        "address_unpublished": 1,
+        "private_home": 1
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "葛飾区",
+      "prefecture": "東京都",
+      "city": "葛飾区",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131229d3100000001",
+      "dataset_id": "t131229d3100000001",
+      "input_rows": 12,
+      "published_rows": 8,
+      "excluded": {
+        "address_unpublished": 4
+      },
+      "note": "",
+      "retrieved": "2026-10-18"
+    },
+    {
+      "provider": "神奈川県（川崎市分）",
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "license": "CC BY",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.opendata.pref.kanagawa.jp/dataset/3612def4cb0fe303382cd734b1e7357b",
+      "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
+      "input_rows": 30,
+      "published_rows": 26,
+      "excluded": {
+        "missing_address": 2,
+        "address_too_coarse": 2
+      },
+      "note": "神奈川県オープンデータカタログの表示は「クリエイティブ・コモンズ-表示(CC-BY)」。掲載は公表の同意が得られた子ども食堂。",
+      "retrieved": "2026-10-18"
+    }
+  ],
+  "not_included": [
+    {
+      "area": "千代田区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "中央区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "港区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "新宿区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "墨田区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "世田谷区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "北区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "足立区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "江戸川区",
+      "reason": "東京都オープンデータカタログを『子ども食堂』で全件検索したが、子ども食堂一覧データセットが無かった。区公式サイトの一般ページはオープンデータ利用規約の対象外で、転載の許諾を確認できないため自動取得していない。"
+    },
+    {
+      "area": "かわさきこども食堂ネットワーク（jimdofree）",
+      "reason": "オープンデータではなく、再利用してよいという許諾を確認できないため使っていない。川崎市分は神奈川県の同意取得済みオープンデータを使った。"
+    },
+    {
+      "area": "むすびえ全国こども食堂マップ",
+      "reason": "全国一括データの二次利用条件をこの作業では確認できなかったため使っていない。"
+    },
+    {
+      "area": "OpenStreetMap",
+      "reason": "子ども食堂の開催曜日まで揃った、運営者の掲載同意が分かる抽出が得られないため、地図の背景タイル以外には使っていない。"
+    }
+  ],
+  "geocoder": {
+    "name": "国土地理院 住所検索API",
+    "url": "https://msearch.gsi.go.jp/address-search/AddressSearch",
+    "note": "原データに信頼できる緯度経度が無い行だけを、1件あたり約0.7秒空けて検索した。結果（不一致を含む）は data/geocode-cache.json に保存し、再実行では再リクエストしない。住所の補修は、区名の重複除去、データセットの市区町村名の補完、渋谷区CSVで欠落している代々木の々の復元、国土地理院の応答が町名止まりだったときの町・字の一回だけ再検索に限る。"
+  }
+}
