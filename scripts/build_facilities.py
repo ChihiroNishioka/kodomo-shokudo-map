@@ -1080,7 +1080,7 @@ def build() -> None:
             "dedup": True,
             "facts_only": True,
             "chome_is_approximate": True,
-            "note": "フッターは©かわさきこども食堂ネットワークのみで、二次利用の許諾文は見当たらない。名称・住所・開催曜日・時間だけを載せ、料金と連絡先は載せていない。子ども食堂溝の口の番地は介護サービス情報公表システム（転載は出所明記）の施設所在地。まなスペースの番地は日本基督教団溝ノ口教会のアクセスページ（All Rights Reserved）にある事実情報。個人宅は住所を残さず除外。",
+            "note": "フッターは©かわさきこども食堂ネットワークのみで、二次利用の許諾文は見当たらない。名称・住所・開催曜日・時間だけを載せ、料金と連絡先は載せていない。子ども食堂溝の口の番地は介護サービス情報公表システム（転載は出所明記）の施設所在地。まなスペースの番地は日本基督教団溝ノ口教会のアクセスページ（All Rights Reserved）にある事実情報。個人宅は住所を残さず除外。2026-10-18に一覧の画像カード7件を読み直した。アーサー子ども食堂、子ども食堂元住吉、菜の花ダイニング、はっぴぃまま子ども食堂、まなスペース、子ども食堂溝の口は、名称と会場が既掲載と一致する。スペース4丁目こども食堂は、リンク先（robots.txtは/app/と/j/を除き許可、Crawl-Delayは5秒）のアクセスページが住所を「方」付きで書いており個人宅のため、番地は残さず除外したまま。新規追加は0件。カード上の料金と個人名の連絡先は載せていない。",
         }
     )
 
@@ -1401,6 +1401,27 @@ def self_test() -> None:
     assert kitami < LOT_REFINE_MAX_METERS
     assert closest_within([(35.596524217, 139.629319953)], 35.597107, 139.629349, LOT_REFINE_MAX_METERS)
     assert closest_within([(35.62, 139.63)], 35.597107, 139.629349, LOT_REFINE_MAX_METERS) is None
+    # 高津区一覧の画像カード7件。6件は既掲載、1件は個人宅のまま住所を残さない。
+    facilities = json.loads(OUT_FACILITIES.read_text(encoding="utf-8"))
+    exclusions = json.loads(OUT_EXCLUSIONS.read_text(encoding="utf-8"))
+    def published(name: str, venue: str) -> bool:
+        return any(
+            name in fold_name(facility["name"]) and venue in facility["address"]["detail"]
+            for facility in facilities
+        )
+    assert published("アーサーこども食堂", "セルディア館")
+    assert published("こども食堂元住吉", "元住吉")
+    assert published("菜の花ダイニング", "プラザ橘")
+    assert published("はっぴぃままこども食堂", "セルディア館")
+    assert published("まなスペース", "溝ノ口教会")
+    assert published("こども食堂溝の口", "溝の口")
+    assert all("スペース4丁目こども食堂" not in facility["name"] for facility in facilities)
+    private = [
+        item for item in exclusions
+        if item["name"] == "スペース4丁目こども食堂" and item["reason"] == "private_home"
+    ]
+    assert len(private) == 1 and "address" not in private[0]
+    assert "方" not in private[0]["name"]
     print("url self-test ok")
 
 
