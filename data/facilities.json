@@ -12939,7 +12939,7 @@
     "fee_text": "子ども・保護者:無料、その他:300円",
     "contact": {
       "phone": "未確認",
-      "url": "http://kodomoshokudo.com https://cfs.tokyo"
+      "url": "未確認"
     },
     "source": {
       "provider": "練馬区",
@@ -14355,6 +14355,84 @@
     }
   },
   {
+    "id": "kanagawa-npo-takatsu-6825a24a",
+    "name": "こども食堂~みんなで食べると美味しいね",
+    "is_sample": false,
+    "description": "会場: グループホーム花物語たかつ東 運営: 株式会社日本アメニティライフ協会",
+    "address": {
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "detail": "高津区子母口283-1 グループホーム花物語たかつ東",
+      "location_precision": "approximate"
+    },
+    "lat": 35.571499,
+    "lng": 139.629913,
+    "schedule": {
+      "frequency_text": "毎月1回(曜日の記載なし)",
+      "weekdays": [],
+      "time_text": "",
+      "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。"
+    },
+    "target": [
+      "child",
+      "family"
+    ],
+    "fee_text": "子ども100円・大人250円",
+    "contact": {
+      "phone": "044-982-0787",
+      "url": "https://c.rakuraku.or.jp/npo/fact?id=1556"
+    },
+    "source": {
+      "provider": "子育て支援情報サービスかながわ（高津区の子ども食堂）",
+      "license": "出所明示（転載可）",
+      "license_url": "https://c.rakuraku.or.jp/index/copyright",
+      "dataset_url": "https://c.rakuraku.or.jp/npo/map",
+      "dataset_id": "kanagawa-npo-takatsu",
+      "retrieved": "2026-10-18",
+      "last_verified": "2026-10-18",
+      "geocoder": "国土地理院 住所検索"
+    }
+  },
+  {
+    "id": "kanagawa-npo-takatsu-18ad904f",
+    "name": "こども食堂~みんなで食べると美味しいね",
+    "is_sample": false,
+    "description": "会場: グループホーム花物語たかつの丘 運営: 株式会社日本アメニティライフ協会",
+    "address": {
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "detail": "高津区久末1495-1 グループホーム花物語たかつの丘",
+      "location_precision": "approximate"
+    },
+    "lat": 35.563156,
+    "lng": 139.621872,
+    "schedule": {
+      "frequency_text": "毎月1回(曜日の記載なし)",
+      "weekdays": [],
+      "time_text": "",
+      "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。"
+    },
+    "target": [
+      "child",
+      "family"
+    ],
+    "fee_text": "子ども100円・大人250円",
+    "contact": {
+      "phone": "044-788-2287",
+      "url": "https://c.rakuraku.or.jp/npo/fact?id=1556"
+    },
+    "source": {
+      "provider": "子育て支援情報サービスかながわ（高津区の子ども食堂）",
+      "license": "出所明示（転載可）",
+      "license_url": "https://c.rakuraku.or.jp/index/copyright",
+      "dataset_url": "https://c.rakuraku.or.jp/npo/map",
+      "dataset_id": "kanagawa-npo-takatsu",
+      "retrieved": "2026-10-18",
+      "last_verified": "2026-10-18",
+      "geocoder": "国土地理院 住所検索"
+    }
+  },
+  {
     "id": "3612def4cb0fe303382cd734b1e7357b-16a82971",
     "name": "どり~むキッチン",
     "is_sample": false,
@@ -14383,6 +14461,47 @@
     "contact": {
       "phone": "未確認",
       "url": "http://hirama-dreamkitchen.space/"
+    },
+    "source": {
+      "provider": "神奈川県（川崎市分）",
+      "license": "CC BY",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "dataset_url": "https://catalog.opendata.pref.kanagawa.jp/dataset/3612def4cb0fe303382cd734b1e7357b",
+      "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
+      "retrieved": "2026-10-18",
+      "last_verified": "2026-10-18",
+      "geocoder": "国土地理院 住所検索"
+    }
+  },
+  {
+    "id": "3612def4cb0fe303382cd734b1e7357b-54ea3204",
+    "name": "はっぴぃまま子ども食堂",
+    "is_sample": false,
+    "description": "会場: セルディア館",
+    "address": {
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "detail": "高津区北見方1-10-26 セルディア館",
+      "location_precision": "approximate"
+    },
+    "lat": 35.597107,
+    "lng": 139.629349,
+    "schedule": {
+      "frequency_text": "水曜 17:00〜 第1水曜日",
+      "weekdays": [
+        "wed"
+      ],
+      "time_text": "17:00〜",
+      "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。"
+    },
+    "target": [
+      "child",
+      "family"
+    ],
+    "fee_text": "幼児無料・小学生200円・中学生200円・高校生200円・大人300円",
+    "contact": {
+      "phone": "未確認",
+      "url": "未確認"
     },
     "source": {
       "provider": "神奈川県（川崎市分）",
@@ -14593,6 +14712,47 @@
       "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
       "dataset_url": "https://catalog.opendata.pref.kanagawa.jp/dataset/3612def4cb0fe303382cd734b1e7357b",
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
+      "retrieved": "2026-10-18",
+      "last_verified": "2026-10-18",
+      "geocoder": "国土地理院 住所検索"
+    }
+  },
+  {
+    "id": "kawasaki-nw-takatsu-b1800b0e",
+    "name": "まなスペース",
+    "is_sample": false,
+    "description": "会場: 日本基督教団溝ノ口教会",
+    "address": {
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "detail": "高津区下作延2-34-22 日本基督教団溝ノ口教会",
+      "location_precision": "approximate"
+    },
+    "lat": 35.596146,
+    "lng": 139.603561,
+    "schedule": {
+      "frequency_text": "第1水曜日",
+      "weekdays": [
+        "wed"
+      ],
+      "time_text": "17:30〜19:00",
+      "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。"
+    },
+    "target": [
+      "child",
+      "family"
+    ],
+    "fee_text": "",
+    "contact": {
+      "phone": "未確認",
+      "url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/"
+    },
+    "source": {
+      "provider": "かわさきこども食堂ネットワーク（高津区一覧）",
+      "license": "許諾未確認",
+      "license_url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/",
+      "dataset_url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/",
+      "dataset_id": "kawasaki-nw-takatsu",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
       "geocoder": "国土地理院 住所検索"
@@ -14969,6 +15129,47 @@
     }
   },
   {
+    "id": "kanagawa-npo-takatsu-2f9c2eaa",
+    "name": "地域で子どもを育む会(ACC子ども食堂)",
+    "is_sample": false,
+    "description": "会場: 久本神社会館 運営: 特定非営利活動法人地域で子どもを育む会",
+    "address": {
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "detail": "高津区久本1丁目 久本神社会館",
+      "location_precision": "approximate"
+    },
+    "lat": 35.597157,
+    "lng": 139.611191,
+    "schedule": {
+      "frequency_text": "毎週金曜日",
+      "weekdays": [
+        "fri"
+      ],
+      "time_text": "16:00〜19:30",
+      "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。"
+    },
+    "target": [
+      "child",
+      "family"
+    ],
+    "fee_text": "無料",
+    "contact": {
+      "phone": "未確認",
+      "url": "https://c.rakuraku.or.jp/npo/fact?id=1419"
+    },
+    "source": {
+      "provider": "子育て支援情報サービスかながわ（高津区の子ども食堂）",
+      "license": "出所明示（転載可）",
+      "license_url": "https://c.rakuraku.or.jp/index/copyright",
+      "dataset_url": "https://c.rakuraku.or.jp/npo/map",
+      "dataset_id": "kanagawa-npo-takatsu",
+      "retrieved": "2026-10-18",
+      "last_verified": "2026-10-18",
+      "geocoder": "国土地理院 住所検索"
+    }
+  },
+  {
     "id": "3612def4cb0fe303382cd734b1e7357b-90ce5bfd",
     "name": "地域食堂「わ」",
     "is_sample": false,
@@ -15092,6 +15293,47 @@
     }
   },
   {
+    "id": "kawasaki-nw-takatsu-c4fec816",
+    "name": "子ども食堂溝の口",
+    "is_sample": false,
+    "description": "会場: SOMPOケア ラヴィーレ溝の口(所在地は介護サービス情報公表システム)",
+    "address": {
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "detail": "高津区末長2-9-45 SOMPOケア ラヴィーレ溝の口(所在地は介護サービス情報公表システム)",
+      "location_precision": "approximate"
+    },
+    "lat": 35.591499,
+    "lng": 139.614639,
+    "schedule": {
+      "frequency_text": "第4土曜日",
+      "weekdays": [
+        "sat"
+      ],
+      "time_text": "11:30〜",
+      "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。"
+    },
+    "target": [
+      "child",
+      "family"
+    ],
+    "fee_text": "",
+    "contact": {
+      "phone": "未確認",
+      "url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/"
+    },
+    "source": {
+      "provider": "かわさきこども食堂ネットワーク（高津区一覧）",
+      "license": "許諾未確認",
+      "license_url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/",
+      "dataset_url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/",
+      "dataset_id": "kawasaki-nw-takatsu",
+      "retrieved": "2026-10-18",
+      "last_verified": "2026-10-18",
+      "geocoder": "国土地理院 住所検索"
+    }
+  },
+  {
     "id": "3612def4cb0fe303382cd734b1e7357b-fd9c18d1",
     "name": "木月こどもキッチン",
     "is_sample": false,
@@ -15172,6 +15414,47 @@
     }
   },
   {
+    "id": "kanagawa-npo-takatsu-edc6bac0",
+    "name": "溝口ピノキオ食堂",
+    "is_sample": false,
+    "description": "会場: 溝口ピノキオ保育園 運営: 社会福祉法人正道会",
+    "address": {
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "detail": "高津区溝口3-24-5 溝口ピノキオ保育園",
+      "location_precision": "approximate"
+    },
+    "lat": 35.605427,
+    "lng": 139.609863,
+    "schedule": {
+      "frequency_text": "第3日曜日",
+      "weekdays": [
+        "sun"
+      ],
+      "time_text": "08:00〜09:45",
+      "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。"
+    },
+    "target": [
+      "child",
+      "family"
+    ],
+    "fee_text": "無料",
+    "contact": {
+      "phone": "044-712-5301",
+      "url": "https://c.rakuraku.or.jp/npo/fact?id=1561"
+    },
+    "source": {
+      "provider": "子育て支援情報サービスかながわ（高津区の子ども食堂）",
+      "license": "出所明示（転載可）",
+      "license_url": "https://c.rakuraku.or.jp/index/copyright",
+      "dataset_url": "https://c.rakuraku.or.jp/npo/map",
+      "dataset_id": "kanagawa-npo-takatsu",
+      "retrieved": "2026-10-18",
+      "last_verified": "2026-10-18",
+      "geocoder": "国土地理院 住所検索"
+    }
+  },
+  {
     "id": "3612def4cb0fe303382cd734b1e7357b-ecbb096d",
     "name": "美波こども食堂",
     "is_sample": false,
@@ -15207,6 +15490,47 @@
       "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
       "dataset_url": "https://catalog.opendata.pref.kanagawa.jp/dataset/3612def4cb0fe303382cd734b1e7357b",
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
+      "retrieved": "2026-10-18",
+      "last_verified": "2026-10-18",
+      "geocoder": "国土地理院 住所検索"
+    }
+  },
+  {
+    "id": "kanagawa-npo-takatsu-26313784",
+    "name": "菜の花ダイニング",
+    "is_sample": false,
+    "description": "会場: プラザ橘",
+    "address": {
+      "prefecture": "神奈川県",
+      "city": "川崎市",
+      "detail": "高津区久末2012-1 プラザ橘",
+      "location_precision": "approximate"
+    },
+    "lat": 35.570103,
+    "lng": 139.623459,
+    "schedule": {
+      "frequency_text": "月1回程度 第3水曜日",
+      "weekdays": [
+        "wed"
+      ],
+      "time_text": "18:00〜",
+      "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。"
+    },
+    "target": [
+      "child",
+      "family"
+    ],
+    "fee_text": "未就学児100円・こども100円・おとな300円",
+    "contact": {
+      "phone": "未確認",
+      "url": "https://c.rakuraku.or.jp/npo/fact?id=1416"
+    },
+    "source": {
+      "provider": "子育て支援情報サービスかながわ（高津区の子ども食堂）",
+      "license": "出所明示（転載可）",
+      "license_url": "https://c.rakuraku.or.jp/index/copyright",
+      "dataset_url": "https://c.rakuraku.or.jp/npo/map",
+      "dataset_id": "kanagawa-npo-takatsu",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
       "geocoder": "国土地理院 住所検索"

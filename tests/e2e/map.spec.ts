@@ -319,12 +319,11 @@ test.describe("パネルと出典", () => {
     await expect(page.locator("#source-panel")).toBeVisible();
     await expect(page.locator("#filter-panel")).toBeHidden();
     await expect(page.locator("#detail")).toBeHidden();
-    await expect(page.locator("#source-panel")).toContainText("番地まで一致したのは344件");
-    await expect(page.locator("#source-panel")).toContainText("町名までの概位は37件");
     const exact = facilities.filter((facility) => facility.address?.location_precision === "exact").length;
     const town = facilities.filter((facility) => facility.address?.location_precision === "approximate").length;
-    expect(exact).toBe(344);
-    expect(town).toBe(37);
+    expect(exact + town).toBe(facilities.length);
+    await expect(page.locator("#source-panel")).toContainText(`番地まで一致したのは${exact}件`);
+    await expect(page.locator("#source-panel")).toContainText(`町名までの概位は${town}件`);
   });
 
   test("一覧から選ぶと詳細を閉じるボタンにフォーカスする", async ({ page }) => {

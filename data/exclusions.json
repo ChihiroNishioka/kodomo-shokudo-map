@@ -253,15 +253,24 @@
     "reason": "missing_address"
   },
   {
-    "name": "はっぴぃまま子ども食堂",
-    "municipality": "川崎市",
-    "reason": "address_too_coarse",
-    "address": "神奈川県川崎市"
-  },
-  {
     "name": "てらこみーる",
     "municipality": "川崎市",
     "reason": "address_too_coarse",
     "address": "神奈川県川崎市中原区"
+  },
+  {
+    "name": "たんぽぽ食堂",
+    "municipality": "川崎市",
+    "reason": "private_home"
+  },
+  {
+    "name": "梶ヶ谷親子食堂",
+    "municipality": "川崎市",
+    "reason": "private_home"
+  },
+  {
+    "name": "スペース4丁目こども食堂",
+    "municipality": "川崎市",
+    "reason": "private_home"
   }
 ]

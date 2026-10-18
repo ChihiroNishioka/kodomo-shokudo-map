@@ -207,6 +207,80 @@ def too_coarse(query: str) -> bool:
     return any(word in query for word in ("周辺", "付近", "一帯", "個別配送"))
 
 
+LOT_RE = re.compile(r"\d+-\d+|\d+番")
+
+
+def has_lot(query: str) -> bool:
+    return bool(LOT_RE.search(nfkc(query)))
+
+
+def chome_only(query: str) -> bool:
+    """A chome with no lot, such as 久本1丁目. The venue name is not part of the query."""
+    text = re.sub(r"\s+", "", nfkc(query))
+    return bool(re.search(r"\d+丁目$", text))
+
+
+def place_key(query: str) -> tuple[str, tuple[int, ...]]:
+    """Town name plus lot numbers, so 北見方1-10-26 matches with or without the prefecture."""
+    text = nfkc(query)
+    numbers = tuple(significant_numbers(text))
+    match = re.search(r"([\u4e00-\u9fff]+)(?=\d)", text)
+    town = match.group(1) if match else ""
+    town = re.sub(r"^.*[市区郡]", "", town)
+    return town, numbers
+
+
+def fold_name(name: str) -> str:
+    text = re.sub(r"\s+", "", nfkc(name).casefold())
+    text = text.replace("子ども", "こども").replace("子供", "こども")
+    text = text.replace("arthur", "アーサー")
+    return re.sub(r"^(sompo|そんぽ)", "", text)
+
+
+def same_facility(name: str, query: str, facility: dict) -> bool:
+    if fold_name(name) != fold_name(facility.get("name", "")):
+        return False
+    address = facility.get("address") or {}
+    other = place_key(
+        f"{address.get('prefecture', '')}{address.get('city', '')}{address.get('detail', '')}"
+    )
+    key = place_key(query)
+    return bool(key[1]) and key == other
+
+
+def borrow_shared_venue_address(rows: list[dict]) -> int:
+    """Within one dataset, copy a lot address onto a row that only names the same venue.
+
+    はっぴぃまま子ども食堂 is「川崎市」+方書セルディア館, and the same file
+    already gives セルディア館 as 北見方1-10-26. One donor address only.
+    """
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        venue = nfkc(row.get("方書", ""))
+        if len(venue) >= 2:
+            groups[venue].append(row)
+    borrowed = 0
+    for group in groups.values():
+        donors = []
+        for row in group:
+            address = nfkc(row.get("住所", ""))
+            if has_lot(address) and address not in donors:
+                donors.append(address)
+        if len(donors) != 1:
+            continue
+        donor = donors[0]
+        for row in group:
+            address = nfkc(row.get("住所", ""))
+            if not address or has_lot(address):
+                continue
+            town, _numbers = place_key(address)
+            if town and town not in donor:
+                continue
+            row["住所"] = donor
+            borrowed += 1
+    return borrowed
+
+
 def kanji_number(token: str) -> str:
     if not token:
         return ""
@@ -738,12 +812,49 @@ def build() -> None:
             "city": "川崎市",
             "rows": load_kanagawa_kawasaki(RAW / "kanagawa.xlsx"),
             "area": "kawasaki",
-            "note": "神奈川県オープンデータカタログの表示は「クリエイティブ・コモンズ-表示(CC-BY)」。掲載は公表の同意が得られた子ども食堂。",
+            "note": "神奈川県オープンデータカタログの表示は「クリエイティブ・コモンズ-表示(CC-BY)」。掲載は公表の同意が得られた子ども食堂。同じファイルの中で方書が同じ番地付き会場が一つだけあるときだけ、番地の無い行へその住所を写した（セルディア館）。",
+        }
+    )
+    npo_rows = load_csv(RAW / "takatsu-npo.csv") if (RAW / "takatsu-npo.csv").exists() else []
+    network_rows = load_csv(RAW / "takatsu-network.csv") if (RAW / "takatsu-network.csv").exists() else []
+    jobs.append(
+        {
+            "dataset_id": "kanagawa-npo-takatsu",
+            "dataset_url": "https://c.rakuraku.or.jp/npo/map",
+            "license": "出所明示（転載可）",
+            "license_url": "https://c.rakuraku.or.jp/index/copyright",
+            "provider": "子育て支援情報サービスかながわ（高津区の子ども食堂）",
+            "prefecture": "神奈川県",
+            "city": "川崎市",
+            "rows": npo_rows,
+            "area": "kawasaki",
+            "dedup": True,
+            "chome_is_approximate": True,
+            "note": "高津区で活動内容が子ども食堂の行だけ。著作権ページは、出所を明示すれば引用・転載・複製できると書き、無断転載を禁じる注記があるものはそれに従うとしている。代表者名・携帯電話・メールアドレスは載せていない。丁目だけで番地が無い会場は町名までの位置にする。",
+        }
+    )
+    jobs.append(
+        {
+            "dataset_id": "kawasaki-nw-takatsu",
+            "dataset_url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/",
+            "license": "許諾未確認",
+            "license_url": "https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/",
+            "provider": "かわさきこども食堂ネットワーク（高津区一覧）",
+            "prefecture": "神奈川県",
+            "city": "川崎市",
+            "rows": network_rows,
+            "area": "kawasaki",
+            "dedup": True,
+            "facts_only": True,
+            "chome_is_approximate": True,
+            "note": "フッターは©かわさきこども食堂ネットワークのみで、二次利用の許諾文は見当たらない。名称・住所・開催曜日・時間だけを載せ、料金と連絡先は載せていない。子ども食堂溝の口の番地は介護サービス情報公表システム（転載は出所明記）の施設所在地。まなスペースの番地は日本基督教団溝ノ口教会のアクセスページ（All Rights Reserved）にある事実情報。個人宅は住所を残さず除外。",
         }
     )
 
     for job in jobs:
         rows = job["rows"]
+        if job["dataset_id"] == KANAGAWA_DATASET:
+            print(f"borrowed venue addresses: {borrow_shared_venue_address(rows)}")
         coords = source_coordinates(rows)
         kept_rows = []
         input_count = len(rows)
@@ -766,12 +877,16 @@ def build() -> None:
             kept_rows.append(row)
         merged = merge_rows(kept_rows)
         geocode_failed = 0
+        duplicate_names: list[str] = []
         for row in merged:
             query, building = split_address(
                 row.get("住所") or row.get("GIS搭載用住所", ""),
                 job["prefecture"],
                 job["city"],
             )
+            if job.get("dedup") and any(same_facility(row.get("名称", ""), query, facility) for facility in facilities):
+                duplicate_names.append(nfkc(row.get("名称", "")))
+                continue
             lat = row.get("_lat")
             lng = row.get("_lng")
             precision = row.get("_precision", "exact")
@@ -809,13 +924,15 @@ def build() -> None:
                 lng = hit["lng"]
                 precision = hit["precision"]
                 geocode_title = hit["title"]
+            if job.get("chome_is_approximate") and precision == "exact" and chome_only(query):
+                precision = "approximate"
             weekdays = row.get("_weekdays") or []
             fragments = row.get("_fragments") or []
             frequency = " / ".join(fragments).strip()
             if not frequency:
                 frequency = "開催曜日はオープンデータに記載がありません。訪問前に施設または自治体へ確認してください。"
             venue = venue_line(row, building)
-            org = organization_line(row)
+            org = "" if job.get("facts_only") else organization_line(row)
             description = " ".join(part for part in (venue, org) if part)
             facility_id = stable_id(job["dataset_id"], row, query)
             if facility_id in seen_ids:
@@ -843,8 +960,11 @@ def build() -> None:
                         "notes": "開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。",
                     },
                     "target": row.get("_targets") or ["child", "family"],
-                    "fee_text": fee_text(row),
-                    "contact": {"phone": public_phone(row), "url": public_url(row)},
+                    "fee_text": "" if job.get("facts_only") else fee_text(row),
+                    "contact": {
+                        "phone": "未確認" if job.get("facts_only") else public_phone(row),
+                        "url": public_url(row),
+                    },
                     "source": {
                         "provider": job["provider"],
                         "license": job["license"],
@@ -870,11 +990,16 @@ def build() -> None:
                 "input_rows": input_count,
                 "published_rows": produced,
                 "excluded": dict(reason_counts),
+                "duplicate_rows": len(duplicate_names),
+                "duplicate_names": duplicate_names,
                 "note": job.get("note", ""),
                 "retrieved": RETRIEVED,
             }
         )
-        print(f"{job['provider']}: in={input_count} out={produced} excluded={dict(reason_counts)}")
+        print(
+            f"{job['provider']}: in={input_count} out={produced} "
+            f"excluded={dict(reason_counts)} duplicates={duplicate_names}"
+        )
 
     deduped = []
     seen_exclusions = set()
@@ -911,7 +1036,7 @@ def build() -> None:
     OUT_EXCLUSIONS.write_text(json.dumps(exclusions, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     summary = {
         "retrieved": RETRIEVED,
-        "coverage": "東京都のうち、東京都オープンデータカタログに CC BY 4.0 の子ども食堂一覧CSVがある14区と、神奈川県オープンデータ（CC BY）の川崎市分。",
+        "coverage": "東京都のうち、東京都オープンデータカタログに CC BY 4.0 の子ども食堂一覧CSVがある14区と、神奈川県オープンデータ（CC BY）の川崎市分。高津区は、出所を明示すれば転載できる子育て支援情報サービスかながわの子ども食堂と、許諾文が見当たらないかわさきこども食堂ネットワーク高津区一覧の事実情報（名称・住所・曜日・時間）を足している。",
         "published_count": len(facilities),
         "excluded_count": len(exclusions),
         "excluded_by_reason": dict(defaultdict(int, {item["reason"]: 0 for item in exclusions})),
@@ -925,8 +1050,16 @@ def build() -> None:
         ]
         + [
             {
-                "area": "かわさきこども食堂ネットワーク（jimdofree）",
-                "reason": "オープンデータではなく、再利用してよいという許諾を確認できないため使っていない。川崎市分は神奈川県の同意取得済みオープンデータを使った。",
+                "area": "かわさきこども食堂ネットワーク（高津区以外）",
+                "reason": "高津区一覧のカードだけを確認した。他区は今回の対象外で、サイト全体の二次利用許諾も見当たらない。",
+            },
+            {
+                "area": "川崎市ホームページ",
+                "reason": "著作権ページは、私的使用と引用を除き無断の複製・転載を禁じ、転載は各コンテンツの問い合わせ先への事前連絡と内容を改変しないことが条件だと書いている。市のページからは転載していない。",
+            },
+            {
+                "area": "川崎市社会福祉協議会『こどもの居場所活動紹介ガイドブック』",
+                "reason": "冊子は個人情報を目的外に使わないことと、掲載内容の無断転載・転写をしないよう書いている。転載していない。",
             },
             {
                 "area": "むすびえ全国こども食堂マップ",
@@ -934,7 +1067,7 @@ def build() -> None:
             },
             {
                 "area": "OpenStreetMap",
-                "reason": "子ども食堂の開催曜日まで揃った、運営者の掲載同意が分かる抽出が得られないため、地図の背景タイル以外には使っていない。",
+                "reason": "2026-10-18に高津区を覆う範囲で、名称が子ども食堂・こども食堂の地物を検索したが0件だった。見つかったsocial_facilityは高齢者の在宅介護支援で、子ども食堂ではない。背景タイル以外には使っていない。",
             },
         ],
         "geocoder": {
@@ -951,6 +1084,10 @@ def build() -> None:
         if item["reason"] == "geocode_failed":
             print(" -", item["municipality"], item["name"], item.get("address", ""))
     summary["excluded_by_reason"] = dict(counts)
+    summary["duplicates_removed"] = sum(report.get("duplicate_rows", 0) for report in source_reports)
+    summary["duplicate_names"] = [
+        name for report in source_reports for name in report.get("duplicate_names", [])
+    ]
     OUT_SOURCES.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"published {len(facilities)} excluded {len(exclusions)} {dict(counts)}")
     save_cache(cache)
@@ -972,6 +1109,24 @@ def self_test() -> None:
     assert not is_http_url("https://example.com/a b")
     sample = [{"id": "x", "source": {"dataset_url": "javascript:alert(1)", "license_url": "https://example.com"}}]
     assert http_url_problems(sample, []) == ["x:dataset_url"]
+    assert fold_name("Arthurこども食堂") == fold_name("アーサー子ども食堂")
+    assert fold_name("SOMPO子ども食堂元住吉") == fold_name("子ども食堂元住吉")
+    assert place_key("神奈川県川崎市高津区北見方1-10-26") == place_key("高津区北見方1-10-26 セルディア館")
+    assert place_key("川崎市中原区下小田中3-26-1")[0] == "下小田中"
+    assert chome_only("神奈川県川崎市高津区久本1丁目")
+    assert not chome_only("神奈川県川崎市高津区溝口3-24-5")
+    assert has_lot("川崎市高津区北見方1-10-26")
+    assert not has_lot("川崎市")
+    borrowed = borrow_shared_venue_address(
+        [
+            {"名称": "甲", "住所": "川崎市", "方書": "セルディア館"},
+            {"名称": "乙", "住所": "川崎市高津区北見方1-10-26", "方書": "セルディア館"},
+        ]
+    )
+    assert borrowed == 1
+    assert exclusion_reason({"名称": "丙", "住所": "個人宅", "備考": "個人宅"}) == "private_home"
+    assert is_http_url("https://c.rakuraku.or.jp/index/copyright")
+    assert is_http_url("https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/")
     print("url self-test ok")
 
 
