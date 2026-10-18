@@ -14,28 +14,41 @@
 <body>
   <a class="skip" href="#map">地図へスキップ</a>
   <header class="top">
-    <div class="brand">
+    <div class="top-bar">
       <p class="app-name">子ども食堂マップ</p>
-      <p class="coverage">東京23区のうちオープンデータがある区と、川崎市</p>
+      <p class="notice-chip" id="notice-text" role="note" title="開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。">開催日は変更の可能性あり</p>
+      <button type="button" id="info-toggle" class="info-toggle" aria-expanded="false" aria-controls="info-panel">説明</button>
     </div>
-    <p class="notice" id="notice-text" role="note">開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。</p>
-    <details class="notice-more">
-      <summary>掲載データの注意</summary>
-      <p>情報は各自治体のオープンデータです。高津区の一部は、出所を明示すれば転載できる神奈川県の子育て支援情報と、再利用の許諾がサイト上で確認できなかった公開一覧の事実情報（名称・住所・開催曜日・時間）です。個人宅や、住所を非公開としている会場は載せていません。電話は団体の固定番号があるものだけを表示し、携帯電話番号とメールアドレスは載せていません。「町名までの位置」は、国土地理院の住所検索が番地まで一致しなかった会場と、番地の無い丁目だけの会場です。ピンは検索結果の地点のままで、個人宅を隠すためにずらしてはいません。行く前に、出典のページか施設に確認してください。</p>
-    </details>
-    <button type="button" id="source-button" class="text-button" aria-haspopup="dialog" aria-expanded="false">出典とライセンス</button>
+    <div id="info-panel" class="info-panel" hidden>
+      <p class="coverage">東京23区のうちオープンデータがある区と、川崎市</p>
+      <p class="notice" id="notice-full">開催日・開催時間は変更される場合があります。訪問前に必ず施設・自治体にご確認ください。</p>
+      <details class="notice-more">
+        <summary>掲載データの注意</summary>
+        <p>情報は各自治体のオープンデータです。高津区の一部は、出所を明示すれば転載できる神奈川県の子育て支援情報と、再利用の許諾がサイト上で確認できなかった公開一覧の事実情報（名称・住所・開催曜日・時間）です。個人宅や、住所を非公開としている会場は載せていません。電話は団体の固定番号があるものだけを表示し、携帯電話番号とメールアドレスは載せていません。「町名までの位置」は、国土地理院の住所検索が番地まで一致しなかった会場と、番地の無い丁目だけの会場です。ピンは検索結果の地点のままで、個人宅を隠すためにずらしてはいません。行く前に、出典のページか施設に確認してください。</p>
+      </details>
+      <button type="button" id="source-button" class="text-button" aria-haspopup="dialog" aria-expanded="false">出典とライセンス</button>
+      <div class="legend" aria-label="地図の記号">
+        <p class="legend-row">
+          <svg class="legend-icon" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c6532a" d="M16 3c-5 0-9 4-9 9 0 6.8 9 16.2 9 16.2S25 18.8 25 12c0-5-4-9-9-9zm0 12.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4z"/></svg>
+          <span>赤ピンは、番地まで分かっている子ども食堂です。</span>
+        </p>
+        <p class="legend-row">
+          <svg class="legend-icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="7" fill="none" stroke="#2f6284" stroke-width="2" stroke-dasharray="2.5 2"/><circle cx="16" cy="16" r="3" fill="#2f6284"/></svg>
+          <span>青丸は、町名までの位置です。1件ずつで、複数件をまとめたクラスターではありません。</span>
+        </p>
+      </div>
+    </div>
   </header>
-
-  <div id="geo-banner" class="geo-banner" role="status" hidden>
-    <p id="geo-message">現在地を取得しています。</p>
-    <button type="button" id="geo-retry" hidden>再試行</button>
-    <button type="button" id="geo-nearest" hidden>最寄りに寄せる</button>
-  </div>
   <p id="fatal" class="fatal" hidden></p>
 
   <main class="stage">
     <div id="map-view" class="map-view">
       <div id="map" role="region" aria-label="子ども食堂の地図"></div>
+      <div id="geo-banner" class="geo-banner" role="status" hidden>
+        <p id="geo-message">現在地を取得しています。</p>
+        <button type="button" id="geo-retry" hidden>再試行</button>
+        <button type="button" id="geo-nearest" hidden>最寄りに寄せる</button>
+      </div>
       <div class="map-tools">
         <button type="button" id="locate-btn" class="tool" aria-label="現在地を再取得">現在地</button>
         <div class="zoom" role="group" aria-label="ズーム">

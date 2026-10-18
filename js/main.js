@@ -89,6 +89,8 @@ function cacheElements() {
     "source-close",
     "source-body",
     "fatal",
+    "info-toggle",
+    "info-panel",
   ]) {
     els[id.replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = document.getElementById(id);
   }
@@ -108,12 +110,23 @@ function bindStaticUi() {
   els.detailClose.addEventListener("click", () => closeDetail(true));
   els.sourceButton.addEventListener("click", () => toggleSource(true));
   els.sourceClose.addEventListener("click", () => toggleSource(false));
+  els.infoToggle.addEventListener("click", () => toggleInfo(els.infoPanel.hidden));
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (!els.detail.hidden) closeDetail(true);
     else if (!els.filterPanel.hidden) toggleFilter(false);
     else if (!els.sourcePanel.hidden) toggleSource(false);
+    else if (!els.infoPanel.hidden) {
+      toggleInfo(false);
+      els.infoToggle.focus();
+    }
   });
+}
+
+function toggleInfo(open) {
+  els.infoPanel.hidden = !open;
+  els.infoToggle.setAttribute("aria-expanded", String(open));
+  state.map?.invalidateSize({ animate: false });
 }
 
 function markerOptions() {
@@ -167,7 +180,7 @@ function applyFallback(message) {
   state.originKind = "fallback";
   clearUserMarker();
   state.map.setView([fallback.lat, fallback.lng], Math.min(state.config.initialZoom || 14, 14));
-  setGeoBanner(`${message} 地図は${fallback.label}を中心に表示しています。`, { retry: true });
+  setGeoBanner(`${message}中心は${fallback.label}です。`, { retry: true });
   refreshViews();
 }
 
@@ -208,7 +221,7 @@ function showNeighborhoodHint(origin) {
   state.nearestId = nearest.facility.id;
   const distance = formatDistance(nearest.distanceMeters);
   setGeoBanner(
-    `近くに子ども食堂がありません。最も近い「${nearest.facility.name}」までは${distance}です。`,
+    `近くに子ども食堂がありません。「${nearest.facility.name}」まで${distance}。`,
     { nearest: true, tone: "info" }
   );
 }
@@ -307,8 +320,9 @@ function revealPin(id) {
   const mapEl = state.map.getContainer();
   const mapRect = mapEl.getBoundingClientRect();
   const sheetTop = els.detail.getBoundingClientRect().top;
+  const bannerHeight = els.geoBanner.hidden ? 0 : els.geoBanner.getBoundingClientRect().height + 8;
   const visibleBottom = Math.min(mapRect.bottom, sheetTop) - 20;
-  const visibleTop = mapRect.top + 28;
+  const visibleTop = mapRect.top + 16 + bannerHeight;
   if (visibleBottom - visibleTop < 64) return;
   const point = state.map.latLngToContainerPoint([facility.lat, facility.lng]);
   const targetY = (visibleTop + visibleBottom) / 2 - mapRect.top;
@@ -463,7 +477,7 @@ function renderSourceDialog() {
     <ul class="source-list">${rows}</ul>
     <h3>入れてないもの</h3>
     <ul class="source-list">${gaps}</ul>
-    <p>座標が元データに無い会場は、国土地理院の住所検索で一度だけ調べ、結果を同梱しています。番地まで一致したのは${counts.block}件、町名までの概位は${counts.town}件です。「町名までの位置」は、番地まで一致しなかった会場です。</p>
+    <p>座標が元データに無い会場は、国土地理院の住所検索で一度だけ調べ、結果を同梱しています。番地まで一致したのは${counts.block}件、町名までの概位は${counts.town}件です。「町名までの位置」は、番地まで一致しなかった会場と、番地の無い丁目だけの会場です。</p>
   `;
 }
 
