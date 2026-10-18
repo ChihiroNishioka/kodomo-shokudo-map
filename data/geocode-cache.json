@@ -171,7 +171,13 @@
     "lat": 35.671898,
     "lng": 139.823013,
     "title": "東京都江東区南砂二丁目３番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "南砂二丁目"
+    }
   },
   "東京都江東区亀戸1-33-5": {
     "lat": 35.695362,
@@ -219,7 +225,13 @@
     "lat": 35.671898,
     "lng": 139.823013,
     "title": "東京都江東区南砂二丁目３番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "南砂二丁目"
+    }
   },
   "東京都品川区北品川1丁目周辺": {
     "lat": 35.622341,
@@ -261,7 +273,13 @@
     "lat": 35.596588,
     "lng": 139.749603,
     "title": "東京都品川区八潮五丁目６番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "八潮五丁目"
+    }
   },
   "東京都品川区中延6-3-14": {
     "lat": 35.60265,
@@ -501,7 +519,13 @@
     "lat": 35.584343,
     "lng": 139.679352,
     "title": "東京都大田区田園調布本町１番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "田園調布本町一丁目"
+    }
   },
   "東京都大田区田園調布本町7-1": {
     "lat": 35.588207,
@@ -591,13 +615,25 @@
     "lat": 35.578014,
     "lng": 139.728333,
     "title": "東京都大田区大森西二丁目２番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "大森西二丁目"
+    }
   },
   "東京都大田区大森西5-29-22": {
     "lat": 35.570984,
     "lng": 139.731476,
     "title": "東京都大田区大森西五丁目２９番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "大森西五丁目"
+    }
   },
   "東京都大田区東蒲田1-20-3-102": {
     "lat": 35.563591,
@@ -651,7 +687,13 @@
     "lat": 35.544682,
     "lng": 139.721436,
     "title": "東京都大田区南六郷二丁目３５番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "南六郷二丁目"
+    }
   },
   "東京都大田区本羽田1-12-9": {
     "lat": 35.548786,
@@ -975,7 +1017,13 @@
     "lat": 35.709118,
     "lng": 139.662613,
     "title": "東京都中野区中野四丁目１１番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "中野四丁目"
+    }
   },
   "東京都杉並区井草2-15-15": {
     "lat": 35.727169,
@@ -1005,7 +1053,13 @@
     "lat": 35.714954,
     "lng": 139.632935,
     "title": "東京都杉並区下井草一丁目６番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "下井草一丁目"
+    }
   },
   "東京都杉並区西荻北4-4-4": {
     "lat": 35.706738,
@@ -1665,7 +1719,12 @@
     "lat": 35.763229,
     "lng": 139.631653,
     "title": "東京都練馬区光が丘二丁目４番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": ""
+    }
   },
   "東京都練馬区石神井町3-2-8レイクサイド石神井公園1F": {
     "lat": 35.740135,
@@ -1707,7 +1766,17 @@
     "lat": 35.742386,
     "lng": 139.647491,
     "title": "東京都練馬区練馬四丁目１０番１４号",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.742384847,
+      "lng": 139.647490633,
+      "title": "東京都練馬区練馬四丁目10番14号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 0.1,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "東京都練馬区土支田3-27-27": {
     "lat": 35.761559,
@@ -1869,7 +1938,12 @@
     "lat": 35.761833,
     "lng": 139.625732,
     "title": "東京都練馬区光が丘五丁目６番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": ""
+    }
   },
   "東京都練馬区桜台2-46-11": {
     "lat": 35.743015,
@@ -1947,13 +2021,24 @@
     "lat": 35.532032,
     "lng": 139.703751,
     "title": "神奈川県川崎市川崎区宮本町３番地",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市中原区下小田中3-26-1": {
     "lat": 35.572079,
     "lng": 139.645432,
     "title": "神奈川県川崎市中原区下小田中三丁目２６番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "下小田中三丁目"
+    }
   },
   "神奈川県川崎市麻生区東百合丘3-17-43階": {
     "lat": 35.596687,
@@ -1965,31 +2050,81 @@
     "lat": 35.546219,
     "lng": 139.662064,
     "title": "神奈川県川崎市幸区南加瀬二丁目２４番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.546320314,
+      "lng": 139.661923261,
+      "title": "神奈川県川崎市幸区南加瀬二丁目24番10号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 17.0,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市川崎区桜本1-8-22": {
     "lat": 35.521019,
     "lng": 139.721283,
     "title": "神奈川県川崎市川崎区桜本一丁目８番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.5205072,
+      "lng": 139.721180047,
+      "title": "神奈川県川崎市川崎区桜本一丁目8番22号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 57.7,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市中原区木月1-34-13コ-ポピュアライフ1F": {
     "lat": 35.56419,
     "lng": 139.652634,
     "title": "神奈川県川崎市中原区木月一丁目３４番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.564138119,
+      "lng": 139.652412147,
+      "title": "神奈川県川崎市中原区木月一丁目34番13号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 20.9,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市川崎区中島3-13-4-2階": {
     "lat": 35.526127,
     "lng": 139.717514,
     "title": "神奈川県川崎市川崎区中島三丁目１３番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.526392761,
+      "lng": 139.717165006,
+      "title": "神奈川県川崎市川崎区中島三丁目13番4号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 43.3,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市多摩区菅北浦1-4-21-101アメニティ北浦": {
     "lat": 35.631207,
     "lng": 139.537872,
     "title": "神奈川県川崎市多摩区菅北浦一丁目４番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.631238825,
+      "lng": 139.538412267,
+      "title": "神奈川県川崎市多摩区菅北浦一丁目4番21号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 49.0,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市宮前区菅生1丁目2": {
     "lat": 35.596104,
@@ -2001,55 +2136,122 @@
     "lat": 35.596333,
     "lng": 139.54538,
     "title": "神奈川県川崎市宮前区菅生三丁目４３番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.596366525,
+      "lng": 139.544787175,
+      "title": "神奈川県川崎市宮前区菅生三丁目43番21号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 53.7,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市多摩区長沢2-2-1": {
     "lat": 35.602474,
     "lng": 139.545975,
     "title": "神奈川県川崎市多摩区長沢二丁目２番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.602580367,
+      "lng": 139.545526208,
+      "title": "神奈川県川崎市多摩区長沢二丁目2番1号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 42.3,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市中原区上平間611-1": {
     "lat": 35.556854,
     "lng": 139.681381,
     "title": "神奈川県川崎市中原区上平間６１１番地",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市中原区今井南町17-3": {
     "lat": 35.571861,
     "lng": 139.653534,
     "title": "神奈川県川崎市中原区今井南町１７番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市麻生区栗平2-1-6小田急マルシェ栗平2F": {
     "lat": 35.60635,
     "lng": 139.480499,
     "title": "神奈川県川崎市麻生区栗平二丁目１番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.606526044,
+      "lng": 139.480792156,
+      "title": "神奈川県川崎市麻生区栗平二丁目1番6号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 32.9,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市多摩区寺尾台2-8-1": {
     "lat": 35.622116,
     "lng": 139.537476,
     "title": "神奈川県川崎市多摩区寺尾台二丁目８番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "寺尾台二丁目"
+    }
   },
   "神奈川県川崎市宮前区菅生ヶ丘23-6": {
     "lat": 35.596279,
     "lng": 139.541275,
     "title": "神奈川県川崎市宮前区菅生ケ丘２３番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市宮前区宮崎3-1-13アズマビル2階": {
     "lat": 35.590721,
     "lng": 139.593689,
     "title": "神奈川県川崎市宮前区宮崎三丁目１番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "宮崎三丁目"
+    }
   },
   "神奈川県川崎市中原区下小田中1-19-21-202": {
     "lat": 35.579426,
     "lng": 139.63736,
     "title": "神奈川県川崎市中原区下小田中一丁目１９番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.579640269,
+      "lng": 139.637372219,
+      "title": "神奈川県川崎市中原区下小田中一丁目19番21号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 23.9,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市中原区下沼部1747": {
     "lat": 35.573753,
@@ -2061,37 +2263,93 @@
     "lat": 35.597107,
     "lng": 139.629349,
     "title": "神奈川県川崎市高津区北見方一丁目１０番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.596524217,
+      "lng": 139.629319953,
+      "title": "神奈川県川崎市高津区北見方一丁目10番26号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 64.9,
+      "limit_m": 250,
+      "nominatim": "no_result"
+    }
   },
   "神奈川県川崎市麻生区上麻生2-20-15": {
     "lat": 35.600212,
     "lng": 139.510544,
     "title": "神奈川県川崎市麻生区上麻生二丁目２０番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.5998622,
+      "lng": 139.512350792,
+      "title": "神奈川県川崎市麻生区上麻生二丁目20番15号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 167.9,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市多摩区中野島1-11-39": {
     "lat": 35.628361,
     "lng": 139.547806,
     "title": "神奈川県川崎市多摩区中野島一丁目１１番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.628884086,
+      "lng": 139.547312189,
+      "title": "神奈川県川崎市多摩区中野島一丁目11番39号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 73.3,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市中原区新城5-2-13プリマSK武蔵新城1階": {
     "lat": 35.587006,
     "lng": 139.629074,
     "title": "神奈川県川崎市中原区新城五丁目２番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.586847806,
+      "lng": 139.628885286,
+      "title": "神奈川県川崎市中原区新城五丁目2番13号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 24.5,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市中原区宮内2-15-16ガ-デン桜1F": {
     "lat": 35.590492,
     "lng": 139.639572,
     "title": "神奈川県川崎市中原区宮内二丁目１５番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.5905237,
+      "lng": 139.639806058,
+      "title": "神奈川県川崎市中原区宮内二丁目15番16号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 21.5,
+      "limit_m": 250,
+      "nominatim": ""
+    }
   },
   "神奈川県川崎市宮前区野川本町3-11-30": {
     "lat": 35.576038,
     "lng": 139.617828,
     "title": "神奈川県川崎市宮前区野川本町三丁目１１番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "no_go",
+      "nominatim": "",
+      "town_chome": "野川本町三丁目"
+    }
   },
   "東京都目黒区鷹番3-12-3": {
     "lat": 35.630493,
@@ -2169,19 +2427,39 @@
     "lat": 35.571499,
     "lng": 139.629913,
     "title": "神奈川県川崎市高津区子母口２８３番地",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": "no_result"
+    }
   },
   "神奈川県川崎市高津区久末1495-1": {
     "lat": 35.563156,
     "lng": 139.621872,
     "title": "神奈川県川崎市高津区久末１４９５番地",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": "no_result"
+    }
   },
   "神奈川県川崎市高津区溝口3-24-5": {
     "lat": 35.605427,
     "lng": 139.609863,
     "title": "神奈川県川崎市高津区溝口三丁目２４番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.605135075,
+      "lng": 139.609694156,
+      "title": "神奈川県川崎市高津区溝口三丁目24番5号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 35.9,
+      "limit_m": 250,
+      "nominatim": "no_result"
+    }
   },
   "神奈川県川崎市高津区久本1丁目": {
     "lat": 35.597157,
@@ -2193,18 +2471,43 @@
     "lat": 35.570103,
     "lng": 139.623459,
     "title": "神奈川県川崎市高津区久末２０１２番地",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": false,
+      "reason": "not_chome_ban_go",
+      "nominatim": "no_result"
+    }
   },
   "神奈川県川崎市高津区下作延2-34-22": {
     "lat": 35.596146,
     "lng": 139.603561,
     "title": "神奈川県川崎市高津区下作延二丁目３４番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.596877356,
+      "lng": 139.603909914,
+      "title": "神奈川県川崎市高津区下作延二丁目34番22号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 87.2,
+      "limit_m": 250,
+      "nominatim": "no_result"
+    }
   },
   "神奈川県川崎市高津区末長2-9-45": {
     "lat": 35.591499,
     "lng": 139.614639,
     "title": "神奈川県川崎市高津区末長二丁目９番",
-    "precision": "approximate"
+    "precision": "approximate",
+    "lot_refine": {
+      "accepted": true,
+      "lat": 35.590497924,
+      "lng": 139.615187758,
+      "title": "神奈川県川崎市高津区末長二丁目9番45号",
+      "geocoder": "国土地理院 住居表示住所",
+      "distance_m": 121.9,
+      "limit_m": 250,
+      "nominatim": "no_result"
+    }
   }
 }

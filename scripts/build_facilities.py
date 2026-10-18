@@ -14,11 +14,14 @@ import csv
 import hashlib
 import io
 import json
+import math
 import re
 import time
 import unicodedata
+import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
@@ -34,6 +37,53 @@ RETRIEVED = "2026-10-18"
 GEOCODE_DELAY_SEC = 0.7
 USER_AGENT = "kodomo-shokudo-map/0.1 (one-time geocode of CC BY open data)"
 GSI_URL = "https://msearch.gsi.go.jp/address-search/AddressSearch"
+# 住居表示の「号」（基礎番号）。住所検索APIが番で止まる地区の別データ。
+JUKYO_ZIP = "https://saigai.gsi.go.jp/jusho/download/data/{code}.zip"
+# 号の点は同じ街区の縁にある。番地代表点からこれより遠い結果は別の場所とみなして捨てる。
+LOT_REFINE_MAX_METERS = 250
+JUKYO_WARD_CODE = {
+    "千代田区": "13101",
+    "中央区": "13102",
+    "港区": "13103",
+    "新宿区": "13104",
+    "文京区": "13105",
+    "台東区": "13106",
+    "墨田区": "13107",
+    "江東区": "13108",
+    "品川区": "13109",
+    "目黒区": "13110",
+    "大田区": "13111",
+    "世田谷区": "13112",
+    "渋谷区": "13113",
+    "中野区": "13114",
+    "杉並区": "13115",
+    "豊島区": "13116",
+    "北区": "13117",
+    "荒川区": "13118",
+    "板橋区": "13119",
+    "練馬区": "13120",
+    "足立区": "13121",
+    "葛飾区": "13122",
+    "江戸川区": "13123",
+    "川崎区": "14131",
+    "幸区": "14132",
+    "中原区": "14133",
+    "高津区": "14134",
+    "多摩区": "14135",
+    "宮前区": "14136",
+    "麻生区": "14137",
+}
+# 2026-10-18 に高津区の8住所を Nominatim へ 1.1 秒間隔で問い合わせた結果。建物の点は無かった。
+NOMINATIM_TAKATSU_MISSES = {
+    "神奈川県川崎市高津区北見方1-10-26",
+    "神奈川県川崎市高津区溝口3-24-5",
+    "神奈川県川崎市高津区末長2-9-45",
+    "神奈川県川崎市高津区下作延2-34-22",
+    "神奈川県川崎市高津区子母口283-1",
+    "神奈川県川崎市高津区久末1495-1",
+    "神奈川県川崎市高津区久末2012-1",
+    "神奈川県川崎市高津区久本1丁目",
+}
 
 # Tokyo 23 wards present in the metropolitan catalog as 子ども食堂一覧, CC BY 4.0.
 # dataset id -> (file names, municipality label, prefecture)
@@ -218,6 +268,188 @@ def chome_only(query: str) -> bool:
     """A chome with no lot, such as 久本1丁目. The venue name is not part of the query."""
     text = re.sub(r"\s+", "", nfkc(query))
     return bool(re.search(r"\d+丁目$", text))
+
+
+def arabic_to_kanji(number: int) -> str:
+    digits = "〇一二三四五六七八九"
+    if number <= 0 or number >= 100:
+        return str(number)
+    if number < 10:
+        return digits[number]
+    if number == 10:
+        return "十"
+    tens, ones = divmod(number, 10)
+    text = ("十" if tens == 1 else digits[tens] + "十")
+    if ones:
+        text += digits[ones]
+    return text
+
+
+def fold_town(value: str) -> str:
+    text = nfkc(value)
+    for source, target in (("ヶ", "ケ"), ("ヵ", "ケ")):
+        text = text.replace(source, target)
+    return text
+
+
+def haversine_meters(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+    radius = 6371000.0
+    phi1 = math.radians(lat1)
+    phi2 = math.radians(lat2)
+    d_lat = math.radians(lat2 - lat1)
+    d_lng = math.radians(lng2 - lng1)
+    h = math.sin(d_lat / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(d_lng / 2) ** 2
+    return 2 * radius * math.asin(min(1.0, math.sqrt(h)))
+
+
+def residence_parts(query: str) -> tuple[str, str, int, int, int] | None:
+    """丁目・番・号に分解できる住所だけを返す。283-1 のような地番の枝番は対象外。"""
+    text = re.sub(r"\s+", "", nfkc(query))
+    text = re.sub(r"^(東京都|神奈川県)", "", text)
+    if text.startswith("川崎市"):
+        text = text[len("川崎市"):]
+    ward = ""
+    ward_match = re.match(r"([\u4e00-\u9fff]{1,6}区)", text)
+    if ward_match and ward_match.group(1) in JUKYO_WARD_CODE:
+        ward = ward_match.group(1)
+        text = text[ward_match.end():]
+    patterns = (
+        r"^([\u4e00-\u9fff々ヶケヵ]+)(\d+)丁目(\d+)[-−](\d+)",
+        r"^([\u4e00-\u9fff々ヶケヵ]+)(\d+)丁目(\d+)番(\d+)号?",
+        r"^([\u4e00-\u9fff々ヶケヵ]+)(\d+)-(\d+)-(\d+)",
+    )
+    for pattern in patterns:
+        match = re.match(pattern, text)
+        if not match:
+            continue
+        town = match.group(1)
+        chome, ban, go = (int(match.group(2)), int(match.group(3)), int(match.group(4)))
+        if not (1 <= chome <= 99 and 0 <= ban <= 9999 and 0 <= go <= 9999):
+            return None
+        return ward, town, chome, ban, go
+    return None
+
+
+def closest_within(points: list[tuple[float, float]], lat: float, lng: float, limit: float) -> tuple[float, float, float] | None:
+    best = None
+    best_distance = None
+    for point_lat, point_lng in points:
+        distance = haversine_meters(lat, lng, point_lat, point_lng)
+        if distance > limit:
+            continue
+        if best_distance is None or distance < best_distance:
+            best = (point_lat, point_lng, distance)
+            best_distance = distance
+    return best
+
+
+_JUKYO_INDEX: dict[str, dict[tuple[str, str, str], list[tuple[float, float]]]] = {}
+
+
+def jukyo_index(code: str) -> dict[tuple[str, str, str], list[tuple[float, float]]]:
+    if code in _JUKYO_INDEX:
+        return _JUKYO_INDEX[code]
+    url = JUKYO_ZIP.format(code=code)
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/zip"})
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            blob = response.read()
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            _JUKYO_INDEX[code] = {}
+            return _JUKYO_INDEX[code]
+        raise
+    index: dict[tuple[str, str, str], list[tuple[float, float]]] = {}
+    with zipfile.ZipFile(io.BytesIO(blob)) as archive:
+        name = next(item for item in archive.namelist() if item.endswith(".csv") and "/shp/" not in item)
+        text = archive.read(name).decode("utf-8-sig")
+    for row in csv.reader(io.StringIO(text)):
+        if len(row) < 8 or not row[2].isdigit() or not row[3].isdigit():
+            continue
+        try:
+            lng = float(row[6])
+            lat = float(row[7])
+        except ValueError:
+            continue
+        if not plausible_point(lat, lng):
+            continue
+        key = (fold_town(row[1]), str(int(row[2])), str(int(row[3])))
+        index.setdefault(key, []).append((lat, lng))
+    _JUKYO_INDEX[code] = index
+    print(f"  jukyo {code}: {len(index)} block-go points")
+    return index
+
+
+def ensure_lot_refine(query: str, hit: dict, cache: dict) -> dict:
+    """住所検索が番や丁目で止まったとき、住居表示の号まで照合する。"""
+    if "lot_refine" in hit:
+        return hit["lot_refine"]
+    nominatim = "no_result" if normalize_address_text(query) in NOMINATIM_TAKATSU_MISSES else ""
+    parts = residence_parts(query)
+    if not parts or not parts[0]:
+        decision = {
+            "accepted": False,
+            "reason": "not_chome_ban_go",
+            "nominatim": nominatim,
+        }
+        hit["lot_refine"] = decision
+        save_cache(cache)
+        return decision
+    ward, town, chome, ban, go = parts
+    code = JUKYO_WARD_CODE.get(ward)
+    if not code:
+        decision = {"accepted": False, "reason": "no_jukyo_ward", "nominatim": nominatim}
+        hit["lot_refine"] = decision
+        save_cache(cache)
+        return decision
+    try:
+        index = jukyo_index(code)
+    except Exception as error:  # noqa: BLE001 - keep the coarser point if the download fails
+        print(f"  jukyo error: {query}: {error}")
+        return {"accepted": False, "reason": "jukyo_error"}
+    town_chome = fold_town(town + arabic_to_kanji(chome) + "丁目")
+    points = index.get((town_chome, str(ban), str(go)), [])
+    if not points:
+        decision = {
+            "accepted": False,
+            "reason": "no_go",
+            "nominatim": nominatim,
+            "town_chome": town_chome,
+        }
+        hit["lot_refine"] = decision
+        save_cache(cache)
+        return decision
+    chosen = closest_within(points, float(hit["lat"]), float(hit["lng"]), LOT_REFINE_MAX_METERS)
+    if not chosen:
+        far = min(haversine_meters(float(hit["lat"]), float(hit["lng"]), lat, lng) for lat, lng in points)
+        decision = {
+            "accepted": False,
+            "reason": "distance",
+            "distance_m": round(far, 1),
+            "limit_m": LOT_REFINE_MAX_METERS,
+            "nominatim": nominatim,
+        }
+        hit["lot_refine"] = decision
+        save_cache(cache)
+        return decision
+    lat, lng, distance = chosen
+    prefix_match = re.match(r"^(.*区)", nfkc(query))
+    prefix = prefix_match.group(1) if prefix_match else ""
+    title = f"{prefix}{town}{arabic_to_kanji(chome)}丁目{ban}番{go}号"
+    decision = {
+        "accepted": True,
+        "lat": lat,
+        "lng": lng,
+        "title": title,
+        "geocoder": "国土地理院 住居表示住所",
+        "distance_m": round(distance, 1),
+        "limit_m": LOT_REFINE_MAX_METERS,
+        "nominatim": nominatim,
+    }
+    hit["lot_refine"] = decision
+    save_cache(cache)
+    print(f"  refine {distance:.0f}m {query} -> {title}")
+    return decision
 
 
 def place_key(query: str) -> tuple[str, tuple[int, ...]]:
@@ -776,6 +1008,7 @@ def record_exclusion(exclusions: list[dict], *, name: str, municipality: str, re
 def build() -> None:
     cache = load_cache()
     facilities = []
+    lot_stats = {"promoted": 0, "rejected_distance": 0, "unresolved": 0}
     exclusions: list[dict] = []
     source_reports = []
     seen_ids: set[str] = set()
@@ -891,6 +1124,7 @@ def build() -> None:
             lng = row.get("_lng")
             precision = row.get("_precision", "exact")
             geocode_title = row.get("_geocode_title", "")
+            geocoder_name = "原データの緯度経度"
             if lat is None or lng is None:
                 if too_coarse(query):
                     record_exclusion(
@@ -924,6 +1158,20 @@ def build() -> None:
                 lng = hit["lng"]
                 precision = hit["precision"]
                 geocode_title = hit["title"]
+                geocoder_name = "国土地理院 住所検索"
+                if precision != "exact":
+                    refine = ensure_lot_refine(query, hit, cache)
+                    if refine.get("accepted"):
+                        lat = refine["lat"]
+                        lng = refine["lng"]
+                        precision = "exact"
+                        geocode_title = refine["title"]
+                        geocoder_name = refine["geocoder"]
+                        lot_stats["promoted"] += 1
+                    elif refine.get("reason") == "distance":
+                        lot_stats["rejected_distance"] += 1
+                    else:
+                        lot_stats["unresolved"] += 1
             if job.get("chome_is_approximate") and precision == "exact" and chome_only(query):
                 precision = "approximate"
             weekdays = row.get("_weekdays") or []
@@ -973,7 +1221,7 @@ def build() -> None:
                         "dataset_id": job["dataset_id"],
                         "retrieved": RETRIEVED,
                         "last_verified": RETRIEVED,
-                        "geocoder": "国土地理院 住所検索" if geocode_title else "原データの緯度経度",
+                        "geocoder": geocoder_name,
                     },
                 }
             )
@@ -1071,9 +1319,12 @@ def build() -> None:
             },
         ],
         "geocoder": {
-            "name": "国土地理院 住所検索API",
+            "name": "国土地理院 住所検索API、および住居表示住所（基礎番号）",
             "url": GSI_URL,
-            "note": "原データに信頼できる緯度経度が無い行だけを、1件あたり約0.7秒空けて検索した。結果（不一致を含む）は data/geocode-cache.json に保存し、再実行では再リクエストしない。住所の補修は、区名の重複除去、データセットの市区町村名の補完、渋谷区CSVで欠落している代々木の々の復元、国土地理院の応答が町名止まりだったときの町・字の一回だけ再検索に限る。",
+            "jukyo_url": "https://saigai.gsi.go.jp/jusho/download/index.html",
+            "lot_refine_max_meters": LOT_REFINE_MAX_METERS,
+            "lot_refine": lot_stats,
+            "note": "原データに信頼できる緯度経度が無い行だけを、国土地理院の住所検索APIで1件あたり約0.7秒空けて検索した。番地が丁目・番・号の形なのに応答が番で止まった行は、同じ院の住居表示住所（号に当たる基礎番号）を照合し、住所検索の点から250m以内のときだけ番地一致に昇格した。それより遠い点は採用していない。町名や丁目までしか取れない行と、地番の枝番（283-1 など）は概位のまま。国土交通省の街区レベル位置参照情報（令和7年・24.0a、川崎市の全区）にはハイフン付きの枝番が無く、親地番は住所検索と同じ点だった。高津区の8住所は OpenStreetMap Nominatim にも、利用規約どおり1.1秒以上空け、アプリ名を付けた User-Agent で1回ずつ問い合わせたが、建物の点は返らなかった。結果は data/geocode-cache.json に保存し、再実行では再リクエストしない。住所の補修は、区名の重複除去、データセットの市区町村名の補完、渋谷区CSVで欠落している代々木の々の復元、国土地理院の応答が町名止まりだったときの町・字の一回だけ再検索に限る。",
         },
     }
     counts: dict[str, int] = defaultdict(int)
@@ -1089,7 +1340,15 @@ def build() -> None:
         name for report in source_reports for name in report.get("duplicate_names", [])
     ]
     OUT_SOURCES.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"published {len(facilities)} excluded {len(exclusions)} {dict(counts)}")
+    exact = sum(1 for facility in facilities if facility["address"]["location_precision"] == "exact")
+    approximate = len(facilities) - exact
+    print(
+        f"published {len(facilities)} excluded {len(exclusions)} {dict(counts)} "
+        f"exact {exact} approximate {approximate} "
+        f"promoted {lot_stats['promoted']} "
+        f"rejected_distance {lot_stats['rejected_distance']} "
+        f"unresolved {lot_stats['unresolved']}"
+    )
     save_cache(cache)
 
 
@@ -1127,6 +1386,21 @@ def self_test() -> None:
     assert exclusion_reason({"名称": "丙", "住所": "個人宅", "備考": "個人宅"}) == "private_home"
     assert is_http_url("https://c.rakuraku.or.jp/index/copyright")
     assert is_http_url("https://kawasaki-kodomoshokudo-nw.jimdofree.com/市内一覧/一覧-高津区/")
+    assert residence_parts("神奈川県川崎市高津区北見方1-10-26") == ("高津区", "北見方", 1, 10, 26)
+    assert residence_parts("神奈川県川崎市幸区南加瀬2丁目24-10") == ("幸区", "南加瀬", 2, 24, 10)
+    assert residence_parts("東京都大田区南六郷2-35-1") == ("大田区", "南六郷", 2, 35, 1)
+    assert residence_parts("神奈川県川崎市高津区久本1丁目") is None
+    assert residence_parts("神奈川県川崎市高津区子母口283-1") is None
+    assert arabic_to_kanji(1) == "一"
+    assert arabic_to_kanji(10) == "十"
+    assert arabic_to_kanji(11) == "十一"
+    assert arabic_to_kanji(24) == "二十四"
+    assert fold_town("菅生ヶ丘") == fold_town("菅生ケ丘")
+    # 北見方1-10-26 の住所検索点と、住居表示の10番26号。同じ街区内なので採用する。
+    kitami = haversine_meters(35.597107, 139.629349, 35.596524217, 139.629319953)
+    assert kitami < LOT_REFINE_MAX_METERS
+    assert closest_within([(35.596524217, 139.629319953)], 35.597107, 139.629349, LOT_REFINE_MAX_METERS)
+    assert closest_within([(35.62, 139.63)], 35.597107, 139.629349, LOT_REFINE_MAX_METERS) is None
     print("url self-test ok")
 
 

@@ -112,9 +112,32 @@ test.describe("現在地が取れる", () => {
     );
     await expect(page.locator(".notice-more")).toContainText("掲載データの注意");
     await expect(page.locator(".notice-more")).not.toHaveAttribute("open");
-    await expect(page.locator(".legend")).toContainText("赤ピンは、番地まで分かっている子ども食堂");
-    await expect(page.locator(".legend")).toContainText("青丸は、町名までの位置");
-    await expect(page.locator(".legend")).toContainText("クラスターではありません");
+    await expect(page.locator(".legend")).toContainText("塗りつぶした赤ピンは、番地まで分かっている子ども食堂");
+    await expect(page.locator(".legend")).toContainText("破線の赤ピンは、町名までの位置");
+    await expect(page.locator(".legend")).toContainText("1件につき1本");
+    await expect(page.locator(".legend")).not.toContainText("青丸");
+    const exactCount = facilities.filter((facility) => facility.address?.location_precision === "exact").length;
+    const townCount = facilities.filter((facility) => facility.address?.location_precision === "approximate").length;
+    await expect(page.locator(".pin-exact")).toHaveCount(exactCount);
+    await expect(page.locator(".pin-approx")).toHaveCount(townCount);
+    await expect(page.locator(".marker-cluster")).toHaveCount(0);
+    const facilityHalos = await page.evaluate(() =>
+      [...document.querySelectorAll("#map .leaflet-overlay-pane path")].filter(
+        (path) => (path.getAttribute("stroke") || "").toLowerCase() === "#3d6b8c"
+      ).length
+    );
+    expect(facilityHalos).toBe(0);
+    const pinColors = await page.evaluate(() => {
+      const color = (selector: string) => getComputedStyle(document.querySelector(selector)!).color;
+      return { exact: color(".pin-exact"), approx: color(".pin-approx") };
+    });
+    expect(pinColors.exact).toBe(pinColors.approx);
+    const shapes = await page.evaluate(() => ({
+      approx: document.querySelector(".pin-approx svg")?.innerHTML || "",
+      exact: document.querySelector(".pin-exact svg")?.innerHTML || "",
+    }));
+    expect(shapes.approx).toContain("stroke-dasharray");
+    expect(shapes.exact).not.toContain("stroke-dasharray");
     await page.screenshot({ path: `${screenshotDir}/07_info_expanded.png`, fullPage: false });
     await page.locator("#info-toggle").click();
     await expect(page.locator("#info-panel")).toBeHidden();
@@ -156,6 +179,11 @@ test.describe("現在地が取れる", () => {
 
     await page.getByRole("tab", { name: "地図" }).click();
     await expect(page.locator(".pin.is-dimmed")).toHaveCount(facilities.length - saturday.length);
+
+    await page.evaluate(() => window.__kodomoMap.map.setZoom(12));
+    await expect.poll(async () => page.locator(".pin-lite").count()).toBe(facilities.length);
+    await expect(page.locator(".pin")).toHaveCount(facilities.length);
+    await expect(page.locator(".marker-cluster")).toHaveCount(0);
   });
 
   test("一本指では地図が動かず、二本指でパンできる", async ({ page }) => {
@@ -394,6 +422,58 @@ test.describe("パネルと出典", () => {
   });
 });
 
+const mizonokuchi = { latitude: 35.6004, longitude: 139.6106 };
+
+test.describe("溝の口駅の近く", () => {
+  test.use({
+    geolocation: mizonokuchi,
+    permissions: ["geolocation"],
+  });
+
+  test("近い施設が個別の赤ピンで見える", async ({ page }) => {
+    await page.goto("/");
+    await waitForMap(page);
+    expect(page.viewportSize()).toEqual({ width: 390, height: 844 });
+    const center = await mapCenter(page);
+    expect(Math.abs(center.lat - mizonokuchi.latitude)).toBeLessThan(0.002);
+    expect(Math.abs(center.lng - mizonokuchi.longitude)).toBeLessThan(0.002);
+    await expect(page.locator(".pin")).toHaveCount(facilities.length);
+    await expect(page.locator(".marker-cluster")).toHaveCount(0);
+    const syncMs = await page.evaluate(() => window.__kodomoMap.lastMarkerSyncMs);
+    expect(syncMs).toBeLessThan(800);
+    console.log(`marker sync ${syncMs.toFixed(1)} ms for ${facilities.length} pins`);
+    await page.screenshot({ path: "docs/screenshots/mizonokuchi-initial.png", fullPage: false });
+
+    await page.evaluate(() => window.__kodomoMap.map.setView([35.6004, 139.6106], 13));
+    await expect.poll(async () => pinsInsideMap(page)).toBeGreaterThanOrEqual(8);
+    await expect.poll(async () => pinsInsideMap(page)).toBeLessThanOrEqual(16);
+    const visible = await pinsInsideMap(page);
+    console.log(`mizonokuchi visible pins at zoom 13: ${visible}`);
+    await expect(page.locator(".pin-lite")).toHaveCount(0);
+    await page.screenshot({ path: "docs/screenshots/mizonokuchi-nearby-pins.png", fullPage: false });
+
+    const nearbyId = await page.evaluate(() => {
+      const origin = { lat: 35.6004, lng: 139.6106 };
+      const facilities = window.__kodomoMap.facilities;
+      let best = facilities[0];
+      let bestDistance = Number.POSITIVE_INFINITY;
+      for (const facility of facilities) {
+        const dLat = (facility.lat - origin.lat) * 111000;
+        const dLng = (facility.lng - origin.lng) * 91000;
+        const distance = dLat * dLat + dLng * dLng;
+        if (distance < bestDistance) {
+          best = facility;
+          bestDistance = distance;
+        }
+      }
+      return best.id;
+    });
+    await page.locator(`.pin[data-facility-id="${nearbyId}"]`).tap();
+    await expect(page.locator("#detail")).toBeVisible();
+    await page.screenshot({ path: "docs/screenshots/mizonokuchi-pin-selected.png", fullPage: false });
+  });
+});
+
 const farLocation = { latitude: 43.06417, longitude: 141.34694 };
 
 test.describe("現在地の近くにピンがない", () => {
@@ -605,10 +685,13 @@ declare global {
       map: {
         getCenter: () => { lat: number; lng: number };
         getZoom: () => number;
+        setZoom: (zoom: number) => void;
+        setView: (center: [number, number], zoom: number) => void;
         dragging: { enabled: () => boolean };
       };
       ready: boolean;
       facilities: Facility[];
+      lastMarkerSyncMs: number;
     };
   }
 }

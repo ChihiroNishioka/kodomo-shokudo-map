@@ -31,6 +31,9 @@ async function main() {
     map.on("click", () => {
       if (state.selectedId) closeDetail(true);
     });
+    map.on("zoomend", () => {
+      if (state.facilities.length) syncMarkers(map, state.facilities, markerOptions());
+    });
     const [facilities, sources] = await Promise.all([
       loadJson(dataUrl),
       sourcesUrl ? loadJson(sourcesUrl).catch(() => null) : Promise.resolve(null),
@@ -54,6 +57,9 @@ async function main() {
       },
       get selectedId() {
         return state.selectedId;
+      },
+      get lastMarkerSyncMs() {
+        return state.map?._kodomoMarkerSyncMs ?? null;
       },
     };
   } catch (error) {
@@ -133,7 +139,6 @@ function markerOptions() {
   return {
     selectedId: state.selectedId,
     matchingIds: matchingIdSet(),
-    radiusMeters: state.config?.approximateRadiusMeters,
     onToggle: toggleFacility,
   };
 }
@@ -384,7 +389,7 @@ function fillDetail(id) {
         / ${externalAnchor(facility.source.license_url, facility.source.license) || escapeHtml(facility.source.license)}
         <span class="fresh">取得日 ${escapeHtml(facility.source.retrieved)}</span></dd></div>
     </dl>
-    ${approximate ? `<p class="detail-note">国土地理院の住所検索で番地まで一致しなかったため、町名までの位置を示しています。掲載${counts.total}件のうち、番地まで一致は${counts.block}件、町名までの概位は${counts.town}件です。円はその地点の目安で、個人宅を隠すための位置ずらしではありません。</p>` : ""}
+    ${approximate ? `<p class="detail-note">番地の号や枝番まで一致しなかったため、町名までの位置を示しています。掲載${counts.total}件のうち、番地まで一致は${counts.block}件、そこまで取れなかった概位は${counts.town}件です。個人宅を隠すための位置ずらしではありません。</p>` : ""}
     <p class="detail-warning">${escapeHtml(facility.schedule.notes)}</p>
     <a class="directions" id="detail-directions" href="${escapeAttr(directions)}" target="_blank" rel="noopener noreferrer">経路を見る</a>
   `;
@@ -477,7 +482,7 @@ function renderSourceDialog() {
     <ul class="source-list">${rows}</ul>
     <h3>入れてないもの</h3>
     <ul class="source-list">${gaps}</ul>
-    <p>座標が元データに無い会場は、国土地理院の住所検索で一度だけ調べ、結果を同梱しています。番地まで一致したのは${counts.block}件、町名までの概位は${counts.town}件です。「町名までの位置」は、番地まで一致しなかった会場と、番地の無い丁目だけの会場です。</p>
+    <p>座標が元データに無い会場は、国土地理院の住所検索で調べ、番地が号で止まっていたものは住居表示の基礎番号も照合しています。住所検索の点から250mより遠い結果は採用していません。番地まで一致したのは${counts.block}件、町名までの概位は${counts.town}件です。「町名までの位置」は、号や枝番まで一致しなかった会場と、番地の無い丁目だけの会場です。</p>
   `;
 }
 

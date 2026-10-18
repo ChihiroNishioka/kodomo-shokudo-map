@@ -11849,9 +11849,9 @@
       "prefecture": "東京都",
       "city": "練馬区",
       "detail": "練馬4-10-14総建メゾン三幸102 こども食堂ぽてと",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.742386,
+    "lat": 35.742385,
     "lng": 139.647491,
     "schedule": {
       "frequency_text": "火曜 17:30〜19:15",
@@ -11878,7 +11878,7 @@
       "dataset_id": "t131202d3100000001",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14157,10 +14157,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "高津区北見方1-10-26 セルディア館",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.597107,
-    "lng": 139.629349,
+    "lat": 35.596524,
+    "lng": 139.62932,
     "schedule": {
       "frequency_text": "水曜 17:00〜 第4水曜日",
       "weekdays": [
@@ -14186,7 +14186,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14281,10 +14281,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "多摩区長沢2-2-1 保育園cotori(子育てトータルサポートセンターcotori)",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.602474,
-    "lng": 139.545975,
+    "lat": 35.60258,
+    "lng": 139.545526,
     "schedule": {
       "frequency_text": "日曜 12:00〜 第3日曜日",
       "weekdays": [
@@ -14310,7 +14310,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14482,10 +14482,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "高津区北見方1-10-26 セルディア館",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.597107,
-    "lng": 139.629349,
+    "lat": 35.596524,
+    "lng": 139.62932,
     "schedule": {
       "frequency_text": "水曜 17:00〜 第1水曜日",
       "weekdays": [
@@ -14511,7 +14511,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14523,10 +14523,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "川崎区中島3-13-4-2階 富士見・中島ソーシャルデザインセンター事務局、他",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.526127,
-    "lng": 139.717514,
+    "lat": 35.526393,
+    "lng": 139.717165,
     "schedule": {
       "frequency_text": "開催曜日はオープンデータに記載がありません。訪問前に施設または自治体へ確認してください。",
       "weekdays": [],
@@ -14550,7 +14550,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14562,10 +14562,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "麻生区栗平2-1-6小田急マルシェ栗平2F Cafe&SpaceL.D.K",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.60635,
-    "lng": 139.480499,
+    "lat": 35.606526,
+    "lng": 139.480792,
     "schedule": {
       "frequency_text": "水曜 10:30〜 第2水曜日",
       "weekdays": [
@@ -14591,7 +14591,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14685,10 +14685,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "幸区南加瀬2丁目24-10 南加瀬中央町内会館",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.546219,
-    "lng": 139.662064,
+    "lat": 35.54632,
+    "lng": 139.661923,
     "schedule": {
       "frequency_text": "水曜 16:00〜 第3水曜日",
       "weekdays": [
@@ -14714,7 +14714,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14726,10 +14726,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "高津区下作延2-34-22 日本基督教団溝ノ口教会",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.596146,
-    "lng": 139.603561,
+    "lat": 35.596877,
+    "lng": 139.60391,
     "schedule": {
       "frequency_text": "第1水曜日",
       "weekdays": [
@@ -14755,7 +14755,7 @@
       "dataset_id": "kawasaki-nw-takatsu",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14808,10 +14808,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "中原区宮内2-15-16ガ-デン桜1F デイサービスこはるびより",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.590492,
-    "lng": 139.639572,
+    "lat": 35.590524,
+    "lng": 139.639806,
     "schedule": {
       "frequency_text": "日曜 12:00〜 第4日曜日",
       "weekdays": [
@@ -14837,7 +14837,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14849,10 +14849,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "中原区新城5-2-13プリマSK武蔵新城1階 メサ・グランデ",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.587006,
-    "lng": 139.629074,
+    "lat": 35.586848,
+    "lng": 139.628885,
     "schedule": {
       "frequency_text": "木曜 17:30〜 第3木曜日",
       "weekdays": [
@@ -14878,7 +14878,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14931,10 +14931,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "中原区下小田中1-19-21 ホッとスペース中原",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.579426,
-    "lng": 139.63736,
+    "lat": 35.57964,
+    "lng": 139.637372,
     "schedule": {
       "frequency_text": "火曜・日曜 18:00〜 第2、4火曜日、第3日曜日(フードパントリー)",
       "weekdays": [
@@ -14961,7 +14961,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -14973,10 +14973,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "宮前区菅生3-43-21 稗原団地自治会館",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.596333,
-    "lng": 139.54538,
+    "lat": 35.596367,
+    "lng": 139.544787,
     "schedule": {
       "frequency_text": "金曜 15:00〜 第4金曜日",
       "weekdays": [
@@ -15002,7 +15002,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -15096,10 +15096,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "多摩区中野島1-11-39 デイサービス喜多",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.628361,
-    "lng": 139.547806,
+    "lat": 35.628884,
+    "lng": 139.547312,
     "schedule": {
       "frequency_text": "月曜 17:00〜 第3月曜日",
       "weekdays": [
@@ -15125,7 +15125,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -15178,10 +15178,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "多摩区菅北浦1-4-21アメニティ北浦",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.631207,
-    "lng": 139.537872,
+    "lat": 35.631239,
+    "lng": 139.538412,
     "schedule": {
       "frequency_text": "土曜 15:00〜 第2土曜日",
       "weekdays": [
@@ -15207,7 +15207,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -15301,10 +15301,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "高津区末長2-9-45 SOMPOケア ラヴィーレ溝の口(所在地は介護サービス情報公表システム)",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.591499,
-    "lng": 139.614639,
+    "lat": 35.590498,
+    "lng": 139.615188,
     "schedule": {
       "frequency_text": "第4土曜日",
       "weekdays": [
@@ -15330,7 +15330,7 @@
       "dataset_id": "kawasaki-nw-takatsu",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -15342,10 +15342,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "中原区木月1-34-13コ-ポピュアライフ1F 木月キッチン",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.56419,
-    "lng": 139.652634,
+    "lat": 35.564138,
+    "lng": 139.652412,
     "schedule": {
       "frequency_text": "火曜 17:00〜 第2、4火曜日",
       "weekdays": [
@@ -15371,7 +15371,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -15383,10 +15383,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "川崎区桜本1-8-22 みんなの家",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.521019,
-    "lng": 139.721283,
+    "lat": 35.520507,
+    "lng": 139.72118,
     "schedule": {
       "frequency_text": "17:00〜",
       "weekdays": [],
@@ -15410,7 +15410,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -15422,10 +15422,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "高津区溝口3-24-5 溝口ピノキオ保育園",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.605427,
-    "lng": 139.609863,
+    "lat": 35.605135,
+    "lng": 139.609694,
     "schedule": {
       "frequency_text": "第3日曜日",
       "weekdays": [
@@ -15451,7 +15451,7 @@
       "dataset_id": "kanagawa-npo-takatsu",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
@@ -15463,10 +15463,10 @@
       "prefecture": "神奈川県",
       "city": "川崎市",
       "detail": "麻生区上麻生2-20-15 デイサービス美波",
-      "location_precision": "approximate"
+      "location_precision": "exact"
     },
-    "lat": 35.600212,
-    "lng": 139.510544,
+    "lat": 35.599862,
+    "lng": 139.512351,
     "schedule": {
       "frequency_text": "金曜 17:00〜 第3金曜日",
       "weekdays": [
@@ -15492,7 +15492,7 @@
       "dataset_id": "3612def4cb0fe303382cd734b1e7357b",
       "retrieved": "2026-10-18",
       "last_verified": "2026-10-18",
-      "geocoder": "国土地理院 住所検索"
+      "geocoder": "国土地理院 住居表示住所"
     }
   },
   {
