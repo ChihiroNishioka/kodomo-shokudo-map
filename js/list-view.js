@@ -20,7 +20,7 @@ export function renderList(container, items, { originKind, originLabel, onSelect
       const facility = item.facility;
       const badges = [
         facility.address.location_precision === "approximate"
-          ? `<span class="badge badge-approx">おおよその位置</span>`
+          ? `<span class="badge badge-approx">町名までの位置</span>`
           : "",
       ].join("");
       return `<li>
